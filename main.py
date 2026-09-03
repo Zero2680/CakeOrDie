@@ -5,7 +5,7 @@ from button import Button
 from math import *
 import asyncio
 screen = display.set_mode((1280, 720), FULLSCREEN)
-display.set_caption('Fire Game')
+display.set_caption('Cake or Die')
 screen.fill((0, 0, 0)) 
 
 class Objeto(sprite.Sprite):
@@ -115,6 +115,82 @@ class Bola(Objeto):
 	def check_suelo(self, sprite1):
 		if (sprite1.y + sprite1.largo) >= self.y and sprite1.y <= (self.y + self.largo) and (sprite1.x + sprite1.ancho) > self.x and sprite1.x < (self.x + self.ancho):
 			return True
+    
+	def MovimientoLemon(self, plataforma):
+		if self.check_colisiones(plataforma) == True:
+			plataforma.vidas -= 1
+			self.x = 1280
+			self.y = 210
+		if self.direccionx == 0:
+			self.x -= 2
+		if self.direccionx == 1:
+			self.x += 2
+		if self.direcciony == 0:
+			self.y -= 5
+		if self.direcciony == 1:
+			self.y += 5
+		if self.x <= 0 and self.direccionx == 0:
+			self.x = 1260
+		if self.x >= 1280 and self.direccionx == 1:
+			self.x = 0
+		if self.y <= 0:
+			self.direcciony = 1
+		if self.y >= 599:
+			self.direcciony = 0
+    
+	def MovimientoGelatina(self, plataforma):
+		if self.check_colisiones(plataforma) == True:
+			plataforma.vidas -= 1
+			self.x = 1280
+			self.y = 100
+		if self.direccionx == 0:
+			self.x -= 1
+		if self.direccionx == 1:
+			self.x += 1
+		if self.direcciony == 0:
+			if self.y <= 100: self.y -= 0.625
+			elif self.y <= 200: self.y -= 2.5
+			elif self.y <= 400: self.y -= 5
+			else: self.y -= 10
+		if self.direcciony == 1:
+			if self.y <= 100: self.y += 0.625
+			elif self.y <= 200: self.y += 2.5
+			elif self.y <= 400: self.y += 5
+			else: self.y += 10
+		if self.x <= 0 and self.direccionx == 0:
+			self.x = 1260
+			self.y = 100
+		if self.x >= 1280 and self.direccionx == 1:
+			self.x = 0
+			self.y = 100
+		if self.y <= 100:
+			self.direcciony = 1
+		if self.y >= 599:
+			self.direcciony = 0
+    
+	def MovimientoTortitas(self, plataforma):
+		if self.check_colisiones(plataforma) == True:
+			plataforma.vidas -= 1
+			self.x = 1280
+		if self.direccionx == 0:
+			self.x -= 5
+		if self.direccionx == 1:
+			self.x += 5
+		if self.x <= 0 and self.direccionx == 0:
+			self.x = 1260
+		if self.x >= 1280 and self.direccionx == 1:
+			self.x = 0
+    
+	def MovimientoDonut(self, plataforma):
+		if self.check_colisiones(plataforma):
+			plataforma.vidas -= 1
+			self.y = -100
+		if self.y < 600:
+			if self.y == -100:
+				self.x = randrange(1, 13) * 100
+			self.y += 4
+		if self.y >= 600:
+			self.y = -100
 
 def get_font(size):
     return font.Font("menu_assets/font.ttf", size)
@@ -130,6 +206,11 @@ pinky_run22 = transform.scale(image.load("cakeordie_images/pinky_run22.png"), (4
 pinky_jump1 = transform.scale(image.load("cakeordie_images/pinky_jump1.png"), (40, 40))
 pinky_jump2 = transform.scale(image.load("cakeordie_images/pinky_jump2.png"), (40, 40))
 cake = transform.scale(image.load("cakeordie_images/cake.png"), (200, 200))
+lemon1 = transform.scale(image.load("cakeordie_images/lemon1.png"), (32, 32))
+lemon2 = transform.scale(image.load("cakeordie_images/lemon2.png"), (32, 32))
+jelly = transform.scale(image.load("cakeordie_images/jelly.png"), (32, 32))
+pancake = transform.scale(image.load("cakeordie_images/pancake.png"), (64, 64))
+dona = transform.scale(image.load("cakeordie_images/dona.png"), (48, 48))
 
 async def main():
     global salto, angulo, x_jump, salto_doble, w, correr, suelo, x_sup, jump, quieto
@@ -147,6 +228,10 @@ async def main():
     plataforma = Bola(300,350,15,30, 1, 1, 0, (0,0,255), 100, 0)
     enemigo = Bola(615,50,50,50, 1, 1, 0, (255,0,0), 100, 0)
     suelo1 = Bola(0, 599, 1280, 300, 1, 1, 0, (0, 0, 0), 0, 0)
+    limon1 = Bola(0,0,15,15, 1, 1, 0, (0,255,0), 100, 0)
+    gelatina1 = Bola(0,100,15,15, 1, 1, 0, (0,255,0), 100, 0)
+    tortita1 = Bola(0,550,30,50, 1, 1, 0, (0,255,0), 100, 0)
+    donut1 = Bola(0,0,15,15, 1, 1, 0, (0,255,0), 100, 0)
     animacion_run = 0
     while True:
         if estado == "Menu":
@@ -240,6 +325,29 @@ async def main():
 
             enemigo.DibujarObjeto()
             screen.blit(cake, (enemigo.x-75, enemigo.y))
+
+            #ANIMACIÓN LEMON
+            #limon1.MovimientoLemon(plataforma)
+            #limon1.DibujarObjeto()
+            #if limon1.direccionx == 1:
+            #    screen.blit(lemon, (limon1.x-10, limon1.y-10))
+            #else:
+            #    screen.blit(lemon, (limon1.x-10, limon1.y-10))
+
+            #ANIMACIÓN GELATINA
+            #gelatina1.MovimientoGelatina(plataforma)
+            #gelatina1.DibujarObjeto()
+            #screen.blit(jelly, (gelatina1.x-10, gelatina1.y-10))
+            
+            #ANIMACIÓN TORTITA
+            #tortita1.MovimientoTortitas(plataforma)
+            #tortita1.DibujarObjeto()
+            #screen.blit(pancake, (tortita1.x-20, tortita1.y-5))
+
+            #ANIMACIÓN DONUT
+            #donut1.MovimientoDonut(plataforma)
+            #donut1.DibujarObjeto()
+            #screen.blit(dona, (donut1.x-17.5, donut1.y-22.5))
 
             #ANIMACIÓN PINKY
             if suelo == False:
