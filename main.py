@@ -242,11 +242,26 @@ lemon2 = transform.scale(image.load("cakeordie_images/lemon2.png"), (32, 32))
 jelly = transform.scale(image.load("cakeordie_images/jelly.png"), (32, 32))
 pancake = transform.scale(image.load("cakeordie_images/pancake.png"), (64, 64))
 dona = transform.scale(image.load("cakeordie_images/dona.png"), (48, 48))
-egg1 = transform.scale(image.load("cakeordie_images/egg1.png"), (64, 64))
-egg2 = transform.scale(image.load("cakeordie_images/egg2.png"), (64, 64))
-egg3 = transform.scale(image.load("cakeordie_images/egg3.png"), (64, 64))
-egg4 = transform.scale(image.load("cakeordie_images/egg4.png"), (64, 64))
-egg5 = transform.scale(image.load("cakeordie_images/egg5.png"), (64, 64))
+egg11 = transform.scale(image.load("cakeordie_images/egg11.png"), (64, 64))
+egg21 = transform.scale(image.load("cakeordie_images/egg21.png"), (64, 64))
+egg31 = transform.scale(image.load("cakeordie_images/egg31.png"), (64, 64))
+egg41 = transform.scale(image.load("cakeordie_images/egg41.png"), (64, 64))
+egg51 = transform.scale(image.load("cakeordie_images/egg51.png"), (64, 64))
+egg12 = transform.scale(image.load("cakeordie_images/egg12.png"), (64, 64))
+egg22 = transform.scale(image.load("cakeordie_images/egg22.png"), (64, 64))
+egg32 = transform.scale(image.load("cakeordie_images/egg32.png"), (64, 64))
+egg42 = transform.scale(image.load("cakeordie_images/egg42.png"), (64, 64))
+egg52 = transform.scale(image.load("cakeordie_images/egg52.png"), (64, 64))
+egg13 = transform.scale(image.load("cakeordie_images/egg13.png"), (64, 64))
+egg23 = transform.scale(image.load("cakeordie_images/egg23.png"), (64, 64))
+egg33 = transform.scale(image.load("cakeordie_images/egg33.png"), (64, 64))
+egg43 = transform.scale(image.load("cakeordie_images/egg43.png"), (64, 64))
+egg53 = transform.scale(image.load("cakeordie_images/egg53.png"), (64, 64))
+egg14 = transform.scale(image.load("cakeordie_images/egg14.png"), (64, 64))
+egg24 = transform.scale(image.load("cakeordie_images/egg24.png"), (64, 64))
+egg34 = transform.scale(image.load("cakeordie_images/egg34.png"), (64, 64))
+egg44 = transform.scale(image.load("cakeordie_images/egg44.png"), (64, 64))
+egg54 = transform.scale(image.load("cakeordie_images/egg54.png"), (64, 64))
 
 async def main():
 	global salto, angulo, x_jump, salto_doble, w, correr, suelo, x_sup, jump, quieto, puntuacion_minijuegos, pisos_tarta
@@ -281,6 +296,7 @@ async def main():
 	huevo9 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
 	huevo10 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
 	animacion_run = 0
+	animacion_huevo = 0
 	tiempo_minijuego = 750
 	while True:
 		if estado == "Menu":
@@ -453,32 +469,24 @@ async def main():
 						estado = "Minijuego1"
 
 		if estado == "Minijuego1":
-			if tiempo_minijuego > 0 and puntuacion_minijuegos < 10:
+			if tiempo_minijuego >= 0 and puntuacion_minijuegos < 10:
 				screen.fill((0, 0, 0)) 
 				huevo1.MovimientoHuevo(plataforma)
-				huevo1.DibujarObjeto()
 				huevo2.MovimientoHuevo(plataforma)
-				huevo2.DibujarObjeto()
 				huevo3.MovimientoHuevo(plataforma)
-				huevo3.DibujarObjeto()
 				huevo4.MovimientoHuevo(plataforma)
-				huevo4.DibujarObjeto()
 				huevo5.MovimientoHuevo(plataforma)
-				huevo5.DibujarObjeto()
 				huevo6.MovimientoHuevo(plataforma)
-				huevo6.DibujarObjeto()
 				huevo7.MovimientoHuevo(plataforma)
-				huevo7.DibujarObjeto()
 				huevo8.MovimientoHuevo(plataforma)
-				huevo8.DibujarObjeto()
 				huevo9.MovimientoHuevo(plataforma)
-				huevo9.DibujarObjeto()
 				huevo10.MovimientoHuevo(plataforma)
-				huevo10.DibujarObjeto()
 
-				barra_tiempo(screen, 340, 150, tiempo_minijuego/2.5, (255, 255, 255))
+				if tiempo_minijuego >= 150: barra_tiempo(screen, 340, 150, tiempo_minijuego/2.5, (255, 255, 255))
+				else: barra_tiempo(screen, 340, 150, tiempo_minijuego/2.5, (255, 0, 0))
 
 				tiempo_minijuego -= 1
+				animacion_huevo += 1
 
 				HUEVO_TEXT = get_font(37).render("PICK THE RAINBOW EGGS " + str(puntuacion_minijuegos) + "/10", True, (244, 137, 246))
 				HUEVO_RECT = HUEVO_TEXT.get_rect(center=(640, 100))
@@ -492,36 +500,63 @@ async def main():
 
 			HUEVO_MOUSE_POS = mouse.get_pos()
 			HUEVO1_BUTTON = Button(image=None, pos=(huevo1.x+25, huevo1.y+25), text_input="H", font=get_font(37), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
-			screen.blit(egg1, (huevo1.x-10, huevo1.y-10))
-
 			HUEVO2_BUTTON = Button(image=None, pos=(huevo2.x+25, huevo2.y+25), text_input="H", font=get_font(37), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
-			screen.blit(egg2, (huevo2.x-10, huevo2.y-10))
-
-			HUEVO3_BUTTON = Button(image=None, pos=(huevo3.x+25, huevo3.y+25), text_input="H", font=get_font(37), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
-			screen.blit(egg3, (huevo3.x-10, huevo3.y-10))
-
-			HUEVO4_BUTTON = Button(image=None, pos=(huevo4.x+25, huevo4.y+25), text_input="H", font=get_font(37), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
-			screen.blit(egg4, (huevo4.x-10, huevo4.y-10))
-
-			HUEVO5_BUTTON = Button(image=None, pos=(huevo5.x+25, huevo5.y+25), text_input="H", font=get_font(37), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
-			screen.blit(egg5, (huevo5.x-10, huevo5.y-10))
-
-			HUEVO6_BUTTON = Button(image=None, pos=(huevo6.x+25, huevo6.y+25), text_input="H", font=get_font(37), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
-			screen.blit(egg4, (huevo6.x-10, huevo6.y-10))
-
-			HUEVO7_BUTTON = Button(image=None, pos=(huevo7.x+25, huevo7.y+25), text_input="H", font=get_font(37), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
-			screen.blit(egg5, (huevo7.x-10, huevo7.y-10))
-
+			HUEVO3_BUTTON = Button(image=None, pos=(huevo3.x+25, huevo3.y+25), text_input="H", font=get_font(37), base_color=(215, 252, 212), hovering_color=(255, 255, 255))			
+			HUEVO4_BUTTON = Button(image=None, pos=(huevo4.x+25, huevo4.y+25), text_input="H", font=get_font(37), base_color=(215, 252, 212), hovering_color=(255, 255, 255))			
+			HUEVO5_BUTTON = Button(image=None, pos=(huevo5.x+25, huevo5.y+25), text_input="H", font=get_font(37), base_color=(215, 252, 212), hovering_color=(255, 255, 255))			
+			HUEVO6_BUTTON = Button(image=None, pos=(huevo6.x+25, huevo6.y+25), text_input="H", font=get_font(37), base_color=(215, 252, 212), hovering_color=(255, 255, 255))			
+			HUEVO7_BUTTON = Button(image=None, pos=(huevo7.x+25, huevo7.y+25), text_input="H", font=get_font(37), base_color=(215, 252, 212), hovering_color=(255, 255, 255))			
 			HUEVO8_BUTTON = Button(image=None, pos=(huevo8.x+25, huevo8.y+25), text_input="H", font=get_font(37), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
-			screen.blit(egg2, (huevo8.x-10, huevo8.y-10))
-		
 			HUEVO9_BUTTON = Button(image=None, pos=(huevo9.x+25, huevo9.y+25), text_input="H", font=get_font(37), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
-			screen.blit(egg3, (huevo9.x-10, huevo9.y-10))
-
 			HUEVO10_BUTTON = Button(image=None, pos=(huevo10.x+25, huevo10.y+25), text_input="H", font=get_font(37), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
-			screen.blit(egg1, (huevo10.x-10, huevo10.y-10))
+			
+			if animacion_huevo <= 15:
+				screen.blit(egg11, (huevo1.x-10, huevo1.y-10))
+				screen.blit(egg21, (huevo2.x-10, huevo2.y-10))
+				screen.blit(egg31, (huevo3.x-10, huevo3.y-10))
+				screen.blit(egg41, (huevo4.x-10, huevo4.y-10))
+				screen.blit(egg51, (huevo5.x-10, huevo5.y-10))
+				screen.blit(egg41, (huevo6.x-10, huevo6.y-10))
+				screen.blit(egg51, (huevo7.x-10, huevo7.y-10))
+				screen.blit(egg21, (huevo8.x-10, huevo8.y-10))
+				screen.blit(egg31, (huevo9.x-10, huevo9.y-10))
+				screen.blit(egg11, (huevo10.x-10, huevo10.y-10))
+			elif animacion_huevo <= 30:
+				screen.blit(egg12, (huevo1.x-10, huevo1.y-10))
+				screen.blit(egg22, (huevo2.x-10, huevo2.y-10))
+				screen.blit(egg32, (huevo3.x-10, huevo3.y-10))
+				screen.blit(egg42, (huevo4.x-10, huevo4.y-10))
+				screen.blit(egg52, (huevo5.x-10, huevo5.y-10))
+				screen.blit(egg42, (huevo6.x-10, huevo6.y-10))
+				screen.blit(egg52, (huevo7.x-10, huevo7.y-10))
+				screen.blit(egg22, (huevo8.x-10, huevo8.y-10))
+				screen.blit(egg32, (huevo9.x-10, huevo9.y-10))
+				screen.blit(egg12, (huevo10.x-10, huevo10.y-10))
+			elif animacion_huevo <= 45:
+				screen.blit(egg13, (huevo1.x-10, huevo1.y-10))
+				screen.blit(egg23, (huevo2.x-10, huevo2.y-10))
+				screen.blit(egg33, (huevo3.x-10, huevo3.y-10))
+				screen.blit(egg43, (huevo4.x-10, huevo4.y-10))
+				screen.blit(egg53, (huevo5.x-10, huevo5.y-10))
+				screen.blit(egg43, (huevo6.x-10, huevo6.y-10))
+				screen.blit(egg53, (huevo7.x-10, huevo7.y-10))
+				screen.blit(egg23, (huevo8.x-10, huevo8.y-10))
+				screen.blit(egg33, (huevo9.x-10, huevo9.y-10))
+				screen.blit(egg13, (huevo10.x-10, huevo10.y-10))
+			elif animacion_huevo <= 60:
+				screen.blit(egg14, (huevo1.x-10, huevo1.y-10))
+				screen.blit(egg24, (huevo2.x-10, huevo2.y-10))
+				screen.blit(egg34, (huevo3.x-10, huevo3.y-10))
+				screen.blit(egg44, (huevo4.x-10, huevo4.y-10))
+				screen.blit(egg54, (huevo5.x-10, huevo5.y-10))
+				screen.blit(egg44, (huevo6.x-10, huevo6.y-10))
+				screen.blit(egg54, (huevo7.x-10, huevo7.y-10))
+				screen.blit(egg24, (huevo8.x-10, huevo8.y-10))
+				screen.blit(egg34, (huevo9.x-10, huevo9.y-10))
+				screen.blit(egg14, (huevo10.x-10, huevo10.y-10))
+				if animacion_huevo == 60: animacion_huevo = 0
 
-			if puntuacion_minijuegos == 10 or tiempo_minijuego < 0: 
+			if puntuacion_minijuegos == 10 or tiempo_minijuego <= 0: 
 				tiempo_minijuego = 0
 				estado = "FinalMinijuego"
 
@@ -541,26 +576,34 @@ async def main():
 				if evento.type == MOUSEBUTTONDOWN:
 					if HUEVO1_BUTTON.checkForInput(HUEVO_MOUSE_POS):
 						huevo1.x = -100
+						tiempo_minijuego -= 50
 					if HUEVO2_BUTTON.checkForInput(HUEVO_MOUSE_POS):
 						huevo2.x = -100
 						puntuacion_minijuegos += 1
 					if HUEVO3_BUTTON.checkForInput(HUEVO_MOUSE_POS):
 						huevo3.y = -100
+						tiempo_minijuego -= 50
 					if HUEVO4_BUTTON.checkForInput(HUEVO_MOUSE_POS):
 						huevo4.y = -100
+						tiempo_minijuego -= 50
 					if HUEVO5_BUTTON.checkForInput(HUEVO_MOUSE_POS):
 						huevo5.x = -100
+						tiempo_minijuego -= 50
 					if HUEVO6_BUTTON.checkForInput(HUEVO_MOUSE_POS):
 						huevo6.x = -100
+						tiempo_minijuego -= 50
 					if HUEVO7_BUTTON.checkForInput(HUEVO_MOUSE_POS):
 						huevo7.y = -100
+						tiempo_minijuego -= 50
 					if HUEVO8_BUTTON.checkForInput(HUEVO_MOUSE_POS):
 						huevo8.y = -100
 						puntuacion_minijuegos += 1
 					if HUEVO9_BUTTON.checkForInput(HUEVO_MOUSE_POS):
 						huevo9.x = -100
+						tiempo_minijuego -= 50
 					if HUEVO10_BUTTON.checkForInput(HUEVO_MOUSE_POS):
 						huevo10.y = -100
+						tiempo_minijuego -= 50
 		
 		if estado == "FinalMinijuego":
 			tiempo_minijuego -= 1
