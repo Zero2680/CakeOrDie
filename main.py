@@ -276,6 +276,7 @@ pair4 = transform.scale(image.load("cakeordie_images/pair4.png"), (128, 192))
 pair5 = transform.scale(image.load("cakeordie_images/pair5.png"), (128, 192))
 pair6 = transform.scale(image.load("cakeordie_images/pair6.png"), (128, 192))
 pair7 = transform.scale(image.load("cakeordie_images/pair7.png"), (128, 192))
+boton = transform.scale(image.load("cakeordie_images/boton.png"), (128, 128))
 
 async def main():
 	global salto, angulo, x_jump, salto_doble, w, correr, suelo, x_sup, jump, quieto, puntuacion_minijuegos, pisos_tarta, posiciones
@@ -505,6 +506,11 @@ async def main():
 						estado = "Minijuego1"
 					if evento.key == K_l:
 						estado = "Minijuego2"
+					if evento.key == K_o:
+						tiempo_minijuego = 0
+						inicio_temporizador = time.get_ticks()
+						pulsado = False
+						estado = "Minijuego3"
 
 		if estado == "Minijuego1":
 			if tiempo_minijuego >= 0 and puntuacion_minijuegos < 10:
@@ -656,38 +662,42 @@ async def main():
 
 			tiempo_minijuego -= 1
 
-			if tiempo_minijuego <= 750:
-				if pareja1 == False:
-					screen.blit(pair7, (pareja11.x, pareja11.y))
-					screen.blit(pair7, (pareja12.x, pareja12.y))
-				if pareja2 == False:
-					screen.blit(pair7, (pareja21.x, pareja21.y))
-					screen.blit(pair7, (pareja22.x, pareja22.y))
-				if pareja3 == False:
-					screen.blit(pair7, (pareja31.x, pareja31.y))
-					screen.blit(pair7, (pareja32.x, pareja32.y))
-				if pareja4 == False:
-					screen.blit(pair7, (pareja41.x, pareja41.y))
-					screen.blit(pair7, (pareja42.x, pareja42.y))
-				if pareja5 == False:
-					screen.blit(pair7, (pareja51.x, pareja51.y))
-					screen.blit(pair7, (pareja52.x, pareja52.y))
-				if pareja6 == False:
-					screen.blit(pair7, (pareja61.x, pareja61.y))
-					screen.blit(pair7, (pareja62.x, pareja62.y))
-			else:
+			if tiempo_minijuego > 750 or pareja1 == True:
 				screen.blit(pair1, (pareja11.x, pareja11.y))
 				screen.blit(pair1, (pareja12.x, pareja12.y))
+			else:
+				screen.blit(pair7, (pareja11.x, pareja11.y))
+				screen.blit(pair7, (pareja12.x, pareja12.y))
+			if tiempo_minijuego > 750 or pareja2 == True:
 				screen.blit(pair2, (pareja21.x, pareja21.y))
 				screen.blit(pair2, (pareja22.x, pareja22.y))
+			else:
+				screen.blit(pair7, (pareja21.x, pareja21.y))
+				screen.blit(pair7, (pareja22.x, pareja22.y))
+			if tiempo_minijuego > 750 or pareja3 == True:
 				screen.blit(pair3, (pareja31.x, pareja31.y))
 				screen.blit(pair3, (pareja32.x, pareja32.y))
+			else:
+				screen.blit(pair7, (pareja31.x, pareja31.y))
+				screen.blit(pair7, (pareja32.x, pareja32.y))
+			if tiempo_minijuego > 750 or pareja4 == True:
 				screen.blit(pair4, (pareja41.x, pareja41.y))
 				screen.blit(pair4, (pareja42.x, pareja42.y))
+			else:
+				screen.blit(pair7, (pareja41.x, pareja41.y))
+				screen.blit(pair7, (pareja42.x, pareja42.y))
+			if tiempo_minijuego > 750 or pareja5 == True:
 				screen.blit(pair5, (pareja51.x, pareja51.y))
 				screen.blit(pair5, (pareja52.x, pareja52.y))
+			else:
+				screen.blit(pair7, (pareja51.x, pareja51.y))
+				screen.blit(pair7, (pareja52.x, pareja52.y))
+			if tiempo_minijuego > 750 or pareja6 == True:
 				screen.blit(pair6, (pareja61.x, pareja61.y))
 				screen.blit(pair6, (pareja62.x, pareja62.y))
+			else:
+				screen.blit(pair7, (pareja61.x, pareja61.y))
+				screen.blit(pair7, (pareja62.x, pareja62.y))
 
 			if puntuacion_minijuegos == 6 or tiempo_minijuego <= 0: 
 				tiempo_minijuego = 0
@@ -778,6 +788,55 @@ async def main():
 							tiempo_minijuego -= 50
 							pareja = 0
 		
+		if estado == "Minijuego3":
+			screen.fill((0, 0, 0)) 
+
+			tiempo_minijuego = time.get_ticks() - inicio_temporizador
+			segundos = tiempo_minijuego // 1000
+			milisegundos = tiempo_minijuego % 1000
+
+			TEMPORIZADOR_TEXT = get_font(37).render("BAKE THE CAKE. REACH 10 SECONDS", True, (244, 137, 246))
+			TEMPORIZADOR_RECT = TEMPORIZADOR_TEXT.get_rect(center=(640, 100))
+			screen.blit(TEMPORIZADOR_TEXT, TEMPORIZADOR_RECT)
+
+			if tiempo_minijuego <= 3000 and pulsado == False:
+				TIEMPO_TEXT = get_font(37).render(f"0{segundos}:{milisegundos:03d}", True, (180, 32, 42))
+				TIEMPO_RECT = TIEMPO_TEXT.get_rect(center=(640, 300))
+				screen.blit(TIEMPO_TEXT, TIEMPO_RECT)
+			elif pulsado == True:
+				TIEMPO_TEXT = get_font(37).render(f"0{segundos_final}:{milisegundos_final:03d}", True, (180, 32, 42))
+				TIEMPO_RECT = TIEMPO_TEXT.get_rect(center=(640, 300))
+				screen.blit(TIEMPO_TEXT, TIEMPO_RECT)
+
+			BOTON_MOUSE_POS = mouse.get_pos()
+			BOTON_BUTTON = Button(image=None, pos=(640, 550), text_input="P", font=get_font(150), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			screen.blit(boton, (562.5, 475))
+
+			if pulsado == True: 
+				tiempo_minijuego = 0
+				if segundos_final == 10: resultado_minijuego = True
+				else: resultado_minijuego = False
+				estado = "FinalMinijuego"
+
+			display.update()
+			for evento in event.get():
+				if evento.type == QUIT:
+					quit()
+					exit()
+				if evento.type==KEYDOWN:
+					if evento.key == K_1 and mixer.music.get_volume() > 0.0:
+						mixer.music.set_volume(mixer.music.get_volume() - 0.1)
+					if evento.key == K_2 and mixer.music.get_volume() > 0.0:
+						mixer.music.set_volume(mixer.music.get_volume() + 0.1)
+					if evento.key == K_ESCAPE:
+						quit()
+						exit()
+				if evento.type == MOUSEBUTTONDOWN:
+					if BOTON_BUTTON.checkForInput(BOTON_MOUSE_POS):
+						pulsado = True
+						segundos_final = tiempo_minijuego // 1000
+						milisegundos_final = tiempo_minijuego % 1000
+
 		if estado == "FinalMinijuego":
 			tiempo_minijuego -= 1
 			if resultado_minijuego == True:
