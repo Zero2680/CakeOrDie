@@ -218,6 +218,13 @@ def barra_tiempo(screen, x, y, hp, color):
 	calculo_barra = int((hp / 100)*largo)
 	draw.rect(screen, color, Rect(x, y, calculo_barra, ancho))
 
+def barajar_cartas():
+	global posiciones
+	for y in [250, 500]:
+		for x in [100, 300, 500, 700, 900, 1100]:
+			posiciones.append((x, y))
+	shuffle(posiciones)
+
 def get_font(size):
     return font.Font("menu_assets/font.ttf", size)
 
@@ -262,9 +269,16 @@ egg24 = transform.scale(image.load("cakeordie_images/egg24.png"), (64, 64))
 egg34 = transform.scale(image.load("cakeordie_images/egg34.png"), (64, 64))
 egg44 = transform.scale(image.load("cakeordie_images/egg44.png"), (64, 64))
 egg54 = transform.scale(image.load("cakeordie_images/egg54.png"), (64, 64))
+pair1 = transform.scale(image.load("cakeordie_images/pair1.png"), (128, 192))
+pair2 = transform.scale(image.load("cakeordie_images/pair2.png"), (128, 192))
+pair3 = transform.scale(image.load("cakeordie_images/pair3.png"), (128, 192))
+pair4 = transform.scale(image.load("cakeordie_images/pair4.png"), (128, 192))
+pair5 = transform.scale(image.load("cakeordie_images/pair5.png"), (128, 192))
+pair6 = transform.scale(image.load("cakeordie_images/pair6.png"), (128, 192))
+pair7 = transform.scale(image.load("cakeordie_images/pair7.png"), (128, 192))
 
 async def main():
-	global salto, angulo, x_jump, salto_doble, w, correr, suelo, x_sup, jump, quieto, puntuacion_minijuegos, pisos_tarta
+	global salto, angulo, x_jump, salto_doble, w, correr, suelo, x_sup, jump, quieto, puntuacion_minijuegos, pisos_tarta, posiciones
 	salto = False
 	angulo = 0.0
 	x_jump = 575
@@ -295,9 +309,31 @@ async def main():
 	huevo8 = Bola(0,-100,40,40, 0, 1, 0, (0,255,0), 100, 0)
 	huevo9 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
 	huevo10 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
+	posiciones = []
+	barajar_cartas()
+	pareja11 = Bola(posiciones[0][0],posiciones[0][1],40,40, 0, 1, 0, (255,0,0), 100, 0)
+	pareja12 = Bola(posiciones[1][0],posiciones[1][1],40,40, 0, 1, 0, (255,0,0), 100, 0)
+	pareja21 = Bola(posiciones[2][0],posiciones[2][1],40,40, 0, 1, 0, (0,255,0), 100, 0)
+	pareja22 = Bola(posiciones[3][0],posiciones[3][1],40,40, 0, 1, 0, (0,255,0), 100, 0)
+	pareja31 = Bola(posiciones[4][0],posiciones[4][1],40,40, 0, 1, 0, (0,0,255), 100, 0)
+	pareja32 = Bola(posiciones[5][0],posiciones[5][1],40,40, 0, 1, 0, (0,0,255), 100, 0)
+	pareja41 = Bola(posiciones[6][0],posiciones[6][1],40,40, 0, 1, 0, (125,0,0), 100, 0)
+	pareja42 = Bola(posiciones[7][0],posiciones[7][1],40,40, 0, 1, 0, (125,0,0), 100, 0)
+	pareja51 = Bola(posiciones[8][0],posiciones[8][1],40,40, 0, 1, 0, (0,125,0), 100, 0)
+	pareja52 = Bola(posiciones[9][0],posiciones[9][1],40,40, 0, 1, 0, (0,125,0), 100, 0)
+	pareja61 = Bola(posiciones[10][0],posiciones[10][1],40,40, 0, 1, 0, (0,0,125), 100, 0)
+	pareja62 = Bola(posiciones[11][0],posiciones[11][1],40,40, 0, 1, 0, (0,0,125), 100, 0)
+	pareja = 0
+	pareja1= False
+	pareja2= False
+	pareja3= False
+	pareja4= False
+	pareja5= False
+	pareja6= False
 	animacion_run = 0
 	animacion_huevo = 0
-	tiempo_minijuego = 750
+	tiempo_minijuego = 1000 #Minijuego1 = 750
+	resultado_minijuego = False
 	while True:
 		if estado == "Menu":
 			screen.fill((0, 0, 0)) 
@@ -467,6 +503,8 @@ async def main():
 						exit()
 					if evento.key == K_k:
 						estado = "Minijuego1"
+					if evento.key == K_l:
+						estado = "Minijuego2"
 
 		if estado == "Minijuego1":
 			if tiempo_minijuego >= 0 and puntuacion_minijuegos < 10:
@@ -558,6 +596,8 @@ async def main():
 
 			if puntuacion_minijuegos == 10 or tiempo_minijuego <= 0: 
 				tiempo_minijuego = 0
+				if puntuacion_minijuegos == 10: resultado_minijuego = True
+				elif tiempo_minijuego <= 0: resultado_minijuego = False
 				estado = "FinalMinijuego"
 
 			display.update()
@@ -605,9 +645,142 @@ async def main():
 						huevo10.y = -100
 						tiempo_minijuego -= 50
 		
+		if estado == "Minijuego2":
+			screen.fill((0, 0, 0)) 
+
+			PAREJAS_TEXT = get_font(37).render("MATCH THE INGREDIENTS " + str(puntuacion_minijuegos) + "/6", True, (244, 137, 246))
+			PAREJAS_RECT = PAREJAS_TEXT.get_rect(center=(640, 100))
+			screen.blit(PAREJAS_TEXT, PAREJAS_RECT)
+
+			if tiempo_minijuego <= 750: barra_tiempo(screen, 340, 150, tiempo_minijuego/2.5, (255, 255, 255))
+
+			tiempo_minijuego -= 1
+
+			if tiempo_minijuego <= 750:
+				if pareja1 == False:
+					screen.blit(pair7, (pareja11.x, pareja11.y))
+					screen.blit(pair7, (pareja12.x, pareja12.y))
+				if pareja2 == False:
+					screen.blit(pair7, (pareja21.x, pareja21.y))
+					screen.blit(pair7, (pareja22.x, pareja22.y))
+				if pareja3 == False:
+					screen.blit(pair7, (pareja31.x, pareja31.y))
+					screen.blit(pair7, (pareja32.x, pareja32.y))
+				if pareja4 == False:
+					screen.blit(pair7, (pareja41.x, pareja41.y))
+					screen.blit(pair7, (pareja42.x, pareja42.y))
+				if pareja5 == False:
+					screen.blit(pair7, (pareja51.x, pareja51.y))
+					screen.blit(pair7, (pareja52.x, pareja52.y))
+				if pareja6 == False:
+					screen.blit(pair7, (pareja61.x, pareja61.y))
+					screen.blit(pair7, (pareja62.x, pareja62.y))
+			else:
+				screen.blit(pair1, (pareja11.x, pareja11.y))
+				screen.blit(pair1, (pareja12.x, pareja12.y))
+				screen.blit(pair2, (pareja21.x, pareja21.y))
+				screen.blit(pair2, (pareja22.x, pareja22.y))
+				screen.blit(pair3, (pareja31.x, pareja31.y))
+				screen.blit(pair3, (pareja32.x, pareja32.y))
+				screen.blit(pair4, (pareja41.x, pareja41.y))
+				screen.blit(pair4, (pareja42.x, pareja42.y))
+				screen.blit(pair5, (pareja51.x, pareja51.y))
+				screen.blit(pair5, (pareja52.x, pareja52.y))
+				screen.blit(pair6, (pareja61.x, pareja61.y))
+				screen.blit(pair6, (pareja62.x, pareja62.y))
+
+			if puntuacion_minijuegos == 6 or tiempo_minijuego <= 0: 
+				tiempo_minijuego = 0
+				if puntuacion_minijuegos == 6: resultado_minijuego = True
+				elif tiempo_minijuego <= 0: resultado_minijuego = False
+				estado = "FinalMinijuego"
+
+			PAREJAS_MOUSE_POS = mouse.get_pos()
+			PAREJA11_BUTTON = Button(image=None, pos=(pareja11.x+75, pareja11.y+100), text_input="P", font=get_font(150), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			PAREJA12_BUTTON = Button(image=None, pos=(pareja12.x+75, pareja12.y+100), text_input="P", font=get_font(150), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			PAREJA21_BUTTON = Button(image=None, pos=(pareja21.x+75, pareja21.y+100), text_input="P", font=get_font(150), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			PAREJA22_BUTTON = Button(image=None, pos=(pareja22.x+75, pareja22.y+100), text_input="P", font=get_font(150), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			PAREJA31_BUTTON = Button(image=None, pos=(pareja31.x+75, pareja31.y+100), text_input="P", font=get_font(150), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			PAREJA32_BUTTON = Button(image=None, pos=(pareja32.x+75, pareja32.y+100), text_input="P", font=get_font(150), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			PAREJA41_BUTTON = Button(image=None, pos=(pareja41.x+75, pareja41.y+100), text_input="P", font=get_font(150), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			PAREJA42_BUTTON = Button(image=None, pos=(pareja42.x+75, pareja42.y+100), text_input="P", font=get_font(150), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			PAREJA51_BUTTON = Button(image=None, pos=(pareja51.x+75, pareja51.y+100), text_input="P", font=get_font(150), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			PAREJA52_BUTTON = Button(image=None, pos=(pareja52.x+75, pareja52.y+100), text_input="P", font=get_font(150), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			PAREJA61_BUTTON = Button(image=None, pos=(pareja61.x+75, pareja61.y+100), text_input="P", font=get_font(150), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			PAREJA62_BUTTON = Button(image=None, pos=(pareja62.x+75, pareja62.y+100), text_input="P", font=get_font(150), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+
+			display.update()
+			for evento in event.get():
+				if evento.type == QUIT:
+					quit()
+					exit()
+				if evento.type==KEYDOWN:
+					if evento.key == K_1 and mixer.music.get_volume() > 0.0:
+						mixer.music.set_volume(mixer.music.get_volume() - 0.1)
+					if evento.key == K_2 and mixer.music.get_volume() > 0.0:
+						mixer.music.set_volume(mixer.music.get_volume() + 0.1)
+					if evento.key == K_ESCAPE:
+						quit()
+						exit()
+				if evento.type == MOUSEBUTTONDOWN:
+					if (PAREJA11_BUTTON.checkForInput(PAREJAS_MOUSE_POS) or PAREJA12_BUTTON.checkForInput(PAREJAS_MOUSE_POS)) and pareja1 == False and tiempo_minijuego <= 750:
+						if pareja == 0: pareja = 1
+						elif pareja == 1: 
+							pareja1 = True 
+							puntuacion_minijuegos += 1
+							pareja = 0
+						else: 
+							tiempo_minijuego -= 50
+							pareja = 0
+					if (PAREJA21_BUTTON.checkForInput(PAREJAS_MOUSE_POS) or PAREJA22_BUTTON.checkForInput(PAREJAS_MOUSE_POS)) and pareja2 == False and tiempo_minijuego <= 750:
+						if pareja == 0: pareja = 2
+						elif pareja == 2: 
+							pareja2 = True 
+							puntuacion_minijuegos += 1
+							pareja = 0
+						else: 
+							tiempo_minijuego -= 50
+							pareja = 0
+					if (PAREJA31_BUTTON.checkForInput(PAREJAS_MOUSE_POS) or PAREJA32_BUTTON.checkForInput(PAREJAS_MOUSE_POS)) and pareja3 == False and tiempo_minijuego <= 750:
+						if pareja == 0: pareja = 3
+						elif pareja == 3: 
+							pareja3 = True 
+							puntuacion_minijuegos += 1
+							pareja = 0
+						else: 
+							tiempo_minijuego -= 50
+							pareja = 0
+					if (PAREJA41_BUTTON.checkForInput(PAREJAS_MOUSE_POS) or PAREJA42_BUTTON.checkForInput(PAREJAS_MOUSE_POS)) and pareja4 == False and tiempo_minijuego <= 750:
+						if pareja == 0: pareja = 4
+						elif pareja == 4: 
+							pareja4 = True 
+							puntuacion_minijuegos += 1
+							pareja = 0
+						else: 
+							tiempo_minijuego -= 50
+							pareja = 0
+					if (PAREJA51_BUTTON.checkForInput(PAREJAS_MOUSE_POS) or PAREJA52_BUTTON.checkForInput(PAREJAS_MOUSE_POS)) and pareja5 == False and tiempo_minijuego <= 750:
+						if pareja == 0: pareja = 5
+						elif pareja == 5: 
+							pareja5 = True 
+							puntuacion_minijuegos += 1
+							pareja = 0
+						else: 
+							tiempo_minijuego -= 50
+							pareja = 0
+					if (PAREJA61_BUTTON.checkForInput(PAREJAS_MOUSE_POS) or PAREJA62_BUTTON.checkForInput(PAREJAS_MOUSE_POS)) and pareja6 == False and tiempo_minijuego <= 750:
+						if pareja == 0: pareja = 6
+						elif pareja == 6: 
+							pareja6 = True 
+							puntuacion_minijuegos += 1
+							pareja = 0
+						else: 
+							tiempo_minijuego -= 50
+							pareja = 0
+		
 		if estado == "FinalMinijuego":
 			tiempo_minijuego -= 1
-			if puntuacion_minijuegos == 10:
+			if resultado_minijuego == True:
 				WIN_TEXT = get_font(37).render("GOOD JOB!", True, (237, 214, 120))
 				WIN_RECT = WIN_TEXT.get_rect(center=(640, 400))
 				screen.blit(WIN_TEXT, WIN_RECT)
@@ -615,7 +788,7 @@ async def main():
 					pisos_tarta += 1
 					estado = "Play"
 			
-			elif tiempo_minijuego < 0:
+			elif resultado_minijuego == False:
 				LOSE_TEXT = get_font(37).render("NICE TRY!", True, (216, 44, 44))
 				LOSE_RECT = LOSE_TEXT.get_rect(center=(640, 400))
 				screen.blit(LOSE_TEXT, LOSE_RECT)
