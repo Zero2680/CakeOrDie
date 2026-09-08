@@ -277,6 +277,18 @@ pair5 = transform.scale(image.load("cakeordie_images/pair5.png"), (128, 192))
 pair6 = transform.scale(image.load("cakeordie_images/pair6.png"), (128, 192))
 pair7 = transform.scale(image.load("cakeordie_images/pair7.png"), (128, 192))
 boton = transform.scale(image.load("cakeordie_images/boton.png"), (128, 128))
+b1 = transform.scale(image.load("cakeordie_images/1.png"), (32, 32))
+b2 = transform.scale(image.load("cakeordie_images/2.png"), (32, 32))
+b3 = transform.scale(image.load("cakeordie_images/3.png"), (32, 32))
+b4 = transform.scale(image.load("cakeordie_images/4.png"), (32, 32))
+b5 = transform.scale(image.load("cakeordie_images/5.png"), (32, 32))
+b6 = transform.scale(image.load("cakeordie_images/6.png"), (32, 32))
+b7 = transform.scale(image.load("cakeordie_images/7.png"), (32, 32))
+b8 = transform.scale(image.load("cakeordie_images/8.png"), (32, 32))
+b9 = transform.scale(image.load("cakeordie_images/9.png"), (32, 32))
+b0 = transform.scale(image.load("cakeordie_images/0.png"), (32, 32))
+bb = transform.scale(image.load("cakeordie_images/BORRAR.png"), (32, 32))
+be = transform.scale(image.load("cakeordie_images/ENTER.png"), (32, 32))
 
 async def main():
 	global salto, angulo, x_jump, salto_doble, w, correr, suelo, x_sup, jump, quieto, puntuacion_minijuegos, pisos_tarta, posiciones
@@ -300,39 +312,7 @@ async def main():
 	gelatina1 = Bola(0,100,15,15, 1, 1, 0, (0,255,0), 100, 0)
 	tortita1 = Bola(0,550,30,50, 1, 1, 0, (0,255,0), 100, 0)
 	donut1 = Bola(0,0,15,15, 1, 1, 0, (0,255,0), 100, 0)
-	huevo1 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
-	huevo2 = Bola(-100,0,40,40, 1, 0, 0, (0,255,0), 100, 0)
-	huevo3 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
-	huevo4 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
-	huevo5 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
-	huevo6 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
-	huevo7 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
-	huevo8 = Bola(0,-100,40,40, 0, 1, 0, (0,255,0), 100, 0)
-	huevo9 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
-	huevo10 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
-	posiciones = []
-	barajar_cartas()
-	pareja11 = Bola(posiciones[0][0],posiciones[0][1],40,40, 0, 1, 0, (255,0,0), 100, 0)
-	pareja12 = Bola(posiciones[1][0],posiciones[1][1],40,40, 0, 1, 0, (255,0,0), 100, 0)
-	pareja21 = Bola(posiciones[2][0],posiciones[2][1],40,40, 0, 1, 0, (0,255,0), 100, 0)
-	pareja22 = Bola(posiciones[3][0],posiciones[3][1],40,40, 0, 1, 0, (0,255,0), 100, 0)
-	pareja31 = Bola(posiciones[4][0],posiciones[4][1],40,40, 0, 1, 0, (0,0,255), 100, 0)
-	pareja32 = Bola(posiciones[5][0],posiciones[5][1],40,40, 0, 1, 0, (0,0,255), 100, 0)
-	pareja41 = Bola(posiciones[6][0],posiciones[6][1],40,40, 0, 1, 0, (125,0,0), 100, 0)
-	pareja42 = Bola(posiciones[7][0],posiciones[7][1],40,40, 0, 1, 0, (125,0,0), 100, 0)
-	pareja51 = Bola(posiciones[8][0],posiciones[8][1],40,40, 0, 1, 0, (0,125,0), 100, 0)
-	pareja52 = Bola(posiciones[9][0],posiciones[9][1],40,40, 0, 1, 0, (0,125,0), 100, 0)
-	pareja61 = Bola(posiciones[10][0],posiciones[10][1],40,40, 0, 1, 0, (0,0,125), 100, 0)
-	pareja62 = Bola(posiciones[11][0],posiciones[11][1],40,40, 0, 1, 0, (0,0,125), 100, 0)
-	pareja = 0
-	pareja1= False
-	pareja2= False
-	pareja3= False
-	pareja4= False
-	pareja5= False
-	pareja6= False
 	animacion_run = 0
-	animacion_huevo = 0
 	tiempo_minijuego = 1000 #Minijuego1 = 750
 	resultado_minijuego = False
 	while True:
@@ -503,14 +483,62 @@ async def main():
 						quit()
 						exit()
 					if evento.key == K_k:
+						tiempo_minijuego = 750
+						puntuacion_minijuegos = 0
+						animacion_huevo = 0
+						huevo1 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
+						huevo2 = Bola(-100,0,40,40, 1, 0, 0, (0,255,0), 100, 0)
+						huevo3 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
+						huevo4 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
+						huevo5 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
+						huevo6 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
+						huevo7 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
+						huevo8 = Bola(0,-100,40,40, 0, 1, 0, (0,255,0), 100, 0)
+						huevo9 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
+						huevo10 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
 						estado = "Minijuego1"
 					if evento.key == K_l:
+						tiempo_minijuego = 1000
+						puntuacion_minijuegos = 0
+						posiciones = []
+						barajar_cartas()
+						pareja11 = Bola(posiciones[0][0],posiciones[0][1],40,40, 0, 1, 0, (255,0,0), 100, 0)
+						pareja12 = Bola(posiciones[1][0],posiciones[1][1],40,40, 0, 1, 0, (255,0,0), 100, 0)
+						pareja21 = Bola(posiciones[2][0],posiciones[2][1],40,40, 0, 1, 0, (0,255,0), 100, 0)
+						pareja22 = Bola(posiciones[3][0],posiciones[3][1],40,40, 0, 1, 0, (0,255,0), 100, 0)
+						pareja31 = Bola(posiciones[4][0],posiciones[4][1],40,40, 0, 1, 0, (0,0,255), 100, 0)
+						pareja32 = Bola(posiciones[5][0],posiciones[5][1],40,40, 0, 1, 0, (0,0,255), 100, 0)
+						pareja41 = Bola(posiciones[6][0],posiciones[6][1],40,40, 0, 1, 0, (125,0,0), 100, 0)
+						pareja42 = Bola(posiciones[7][0],posiciones[7][1],40,40, 0, 1, 0, (125,0,0), 100, 0)
+						pareja51 = Bola(posiciones[8][0],posiciones[8][1],40,40, 0, 1, 0, (0,125,0), 100, 0)
+						pareja52 = Bola(posiciones[9][0],posiciones[9][1],40,40, 0, 1, 0, (0,125,0), 100, 0)
+						pareja61 = Bola(posiciones[10][0],posiciones[10][1],40,40, 0, 1, 0, (0,0,125), 100, 0)
+						pareja62 = Bola(posiciones[11][0],posiciones[11][1],40,40, 0, 1, 0, (0,0,125), 100, 0)
+						pareja = 0
+						pareja1= False
+						pareja2= False
+						pareja3= False
+						pareja4= False
+						pareja5= False
+						pareja6= False
 						estado = "Minijuego2"
 					if evento.key == K_o:
 						tiempo_minijuego = 0
 						inicio_temporizador = time.get_ticks()
 						pulsado = False
 						estado = "Minijuego3"
+					if evento.key == K_p:
+						tiempo_minijuego = 750
+						eggs_bill = choice([6, 12, 18]) #3, 6, 9
+						milk_bill = choice([1, 2, 3]) #2, 4, 6
+						chocolate_bill = choice([4, 5, 6]) #12, 15, 18
+						strawberry_bill = choice([10, 20, 30]) #2, 4, 6
+						cheese_bill = choice([1, 2, 3]) #5, 10, 15
+						cookie_bill = choice([7, 8, 9]) #7, 8, 9
+						precio_bill = 0
+						precio_final = int((eggs_bill * 0.5) + (milk_bill * 2) + (chocolate_bill * 3) + (strawberry_bill * 0.2) + (cheese_bill * 5) + (cookie_bill * 1))
+						enter = False
+						estado = "Minijuego4"
 
 		if estado == "Minijuego1":
 			if tiempo_minijuego >= 0 and puntuacion_minijuegos < 10:
@@ -836,6 +864,141 @@ async def main():
 						pulsado = True
 						segundos_final = tiempo_minijuego // 1000
 						milisegundos_final = tiempo_minijuego % 1000
+		
+		if estado == "Minijuego4":
+			screen.fill((0, 0, 0)) 
+
+			BILL_TEXT = get_font(37).render("PAY THE BILL. INPUT FINAL PRICE", True, (244, 137, 246))
+			BILL_RECT = BILL_TEXT.get_rect(center=(640, 100))
+			screen.blit(BILL_TEXT, BILL_RECT)
+
+			if tiempo_minijuego >= 150: barra_tiempo(screen, 340, 150, tiempo_minijuego/2.5, (255, 255, 255))
+			else: barra_tiempo(screen, 340, 150, tiempo_minijuego/2.5, (255, 0, 0))
+
+			tiempo_minijuego -= 1
+
+			if tiempo_minijuego <= 0 or enter == True: 
+				tiempo_minijuego = 0
+				PF_TEXT2 = get_font(20).render(str(precio_final), True, (255, 255, 255))
+				PF_RECT2 = PF_TEXT2.get_rect(center=(960, 640))
+				screen.blit(PF_TEXT2, PF_RECT2)
+				if precio_bill == precio_final: resultado_minijuego = True
+				else: resultado_minijuego = False
+				estado = "FinalMinijuego"
+
+			PRICE_TEXT = get_font(20).render("PRICES", True, (255, 255, 255))
+			PRICE_RECT = PRICE_TEXT.get_rect(center=(320, 200))
+			screen.blit(PRICE_TEXT, PRICE_RECT)
+			EGG_TEXT = get_font(20).render("EGGS............0,5€/unit", True, (255, 255, 255))
+			EGG_RECT = EGG_TEXT.get_rect(center=(320, 250))
+			screen.blit(EGG_TEXT, EGG_RECT)
+			MILK_TEXT = get_font(20).render("MILK..............2€/unit", True, (255, 255, 255))
+			MILK_RECT = MILK_TEXT.get_rect(center=(320, 300))
+			screen.blit(MILK_TEXT, MILK_RECT)
+			CHOCOLATE_TEXT = get_font(20).render("CHOCOLATE.........3€/unit", True, (255, 255, 255))
+			CHOCOLATE_RECT = CHOCOLATE_TEXT.get_rect(center=(320, 350))
+			screen.blit(CHOCOLATE_TEXT, CHOCOLATE_RECT)
+			STRAWBERRY_TEXT = get_font(20).render("STRAWBERRIES....0,2€/unit", True, (255, 255, 255))
+			STRAWBERRY_RECT = STRAWBERRY_TEXT.get_rect(center=(320, 400))
+			screen.blit(STRAWBERRY_TEXT, STRAWBERRY_RECT)
+			CHEESE_TEXT = get_font(20).render("CHEESE............5€/unit", True, (255, 255, 255))
+			CHEESE_RECT = CHEESE_TEXT.get_rect(center=(320, 450))
+			screen.blit(CHEESE_TEXT, CHEESE_RECT)
+			COOKIE_TEXT = get_font(20).render("COOKIES...........1€/unit", True, (255, 255, 255))
+			COOKIE_RECT = COOKIE_TEXT.get_rect(center=(320, 500))
+			screen.blit(COOKIE_TEXT, COOKIE_RECT)
+
+			BILL_TEXT2 = get_font(20).render("BILL", True, (255, 255, 255))
+			BILL_RECT2 = BILL_TEXT2.get_rect(center=(960, 200))
+			screen.blit(BILL_TEXT2, BILL_RECT2)
+			EGG_TEXT2 = get_font(20).render("EGGS............" + str(eggs_bill) + " units", True, (255, 255, 255))
+			EGG_RECT2 = EGG_TEXT2.get_rect(center=(960, 250))
+			screen.blit(EGG_TEXT2, EGG_RECT2)
+			MILK_TEXT2 = get_font(20).render("MILK............." + str(milk_bill) + " units", True, (255, 255, 255))
+			MILK_RECT2 = MILK_TEXT2.get_rect(center=(960, 300))
+			screen.blit(MILK_TEXT2, MILK_RECT2)
+			CHOCOLATE_TEXT2 = get_font(20).render("CHOCOLATE........" + str(chocolate_bill) + " units", True, (255, 255, 255))
+			CHOCOLATE_RECT2 = CHOCOLATE_TEXT2.get_rect(center=(960, 350))
+			screen.blit(CHOCOLATE_TEXT2, CHOCOLATE_RECT2)
+			STRAWBERRY_TEXT2 = get_font(20).render("STRAWBERRIES...." + str(strawberry_bill) + " units", True, (255, 255, 255))
+			STRAWBERRY_RECT2 = STRAWBERRY_TEXT2.get_rect(center=(960, 400))
+			screen.blit(STRAWBERRY_TEXT2, STRAWBERRY_RECT2)
+			CHEESE_TEXT2 = get_font(20).render("CHEESE..........." + str(cheese_bill) + " units", True, (255, 255, 255))
+			CHEESE_RECT2 = CHEESE_TEXT2.get_rect(center=(960, 450))
+			screen.blit(CHEESE_TEXT2, CHEESE_RECT2)
+			COOKIE_TEXT2 = get_font(20).render("COOKIES.........." + str(cookie_bill) + " units", True, (255, 255, 255))
+			COOKIE_RECT2 = COOKIE_TEXT2.get_rect(center=(960, 500))
+			screen.blit(COOKIE_TEXT2, COOKIE_RECT2)
+
+			B_MOUSE_POS = mouse.get_pos()
+			B1_BUTTON = Button(image=None, pos=(580, 560), text_input="1", font=get_font(30), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			screen.blit(b1, (562.5, 543))
+			B2_BUTTON = Button(image=None, pos=(640, 560), text_input="2", font=get_font(30), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			screen.blit(b2, (622.5, 543))
+			B3_BUTTON = Button(image=None, pos=(700, 560), text_input="3", font=get_font(30), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			screen.blit(b3, (682.5, 543))
+			B4_BUTTON = Button(image=None, pos=(580, 600), text_input="4", font=get_font(30), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			screen.blit(b4, (562.5, 583))
+			B5_BUTTON = Button(image=None, pos=(640, 600), text_input="5", font=get_font(30), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			screen.blit(b5, (622.5, 583))
+			B6_BUTTON = Button(image=None, pos=(700, 600), text_input="6", font=get_font(30), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			screen.blit(b6, (682.5, 583))
+			B7_BUTTON = Button(image=None, pos=(580, 640), text_input="7", font=get_font(30), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			screen.blit(b7, (562.5, 623))
+			B8_BUTTON = Button(image=None, pos=(640, 640), text_input="8", font=get_font(30), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			screen.blit(b8, (622.5, 623))
+			B9_BUTTON = Button(image=None, pos=(700, 640), text_input="9", font=get_font(30), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			screen.blit(b9, (682.5, 623))
+			BBORRAR_BUTTON = Button(image=None, pos=(580, 680), text_input="B", font=get_font(30), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			screen.blit(bb, (562.5, 663))
+			B0_BUTTON = Button(image=None, pos=(640, 680), text_input="0", font=get_font(30), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			screen.blit(b0, (622.5, 663))
+			BENTER_BUTTON = Button(image=None, pos=(700, 680), text_input="E", font=get_font(30), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
+			screen.blit(be, (682.5, 663))
+
+			PB_TEXT2 = get_font(20).render(str(precio_bill), True, (255, 255, 255))
+			PB_RECT2 = PB_TEXT2.get_rect(center=(960, 600))
+			screen.blit(PB_TEXT2, PB_RECT2)
+
+			display.update()
+			for evento in event.get():
+				if evento.type == QUIT:
+					quit()
+					exit()
+				if evento.type==KEYDOWN:
+					if evento.key == K_1 and mixer.music.get_volume() > 0.0:
+						mixer.music.set_volume(mixer.music.get_volume() - 0.1)
+					if evento.key == K_2 and mixer.music.get_volume() > 0.0:
+						mixer.music.set_volume(mixer.music.get_volume() + 0.1)
+					if evento.key == K_ESCAPE:
+						quit()
+						exit()
+				if evento.type == MOUSEBUTTONDOWN:
+					if B1_BUTTON.checkForInput(B_MOUSE_POS):
+						precio_bill = (precio_bill * 10) + 1
+					if B2_BUTTON.checkForInput(B_MOUSE_POS):
+						precio_bill = (precio_bill * 10) + 2
+					if B3_BUTTON.checkForInput(B_MOUSE_POS):
+						precio_bill = (precio_bill * 10) + 3
+					if B4_BUTTON.checkForInput(B_MOUSE_POS):
+						precio_bill = (precio_bill * 10) + 4
+					if B5_BUTTON.checkForInput(B_MOUSE_POS):
+						precio_bill = (precio_bill * 10) + 5
+					if B6_BUTTON.checkForInput(B_MOUSE_POS):
+						precio_bill = (precio_bill * 10) + 6
+					if B7_BUTTON.checkForInput(B_MOUSE_POS):
+						precio_bill = (precio_bill * 10) + 7
+					if B8_BUTTON.checkForInput(B_MOUSE_POS):
+						precio_bill = (precio_bill * 10) + 8
+					if B9_BUTTON.checkForInput(B_MOUSE_POS):
+						precio_bill = (precio_bill * 10) + 9
+					if B0_BUTTON.checkForInput(B_MOUSE_POS):
+						precio_bill = (precio_bill * 10) + 0
+					if BBORRAR_BUTTON.checkForInput(B_MOUSE_POS):
+						precio_bill = precio_bill // 10
+					if BENTER_BUTTON.checkForInput(B_MOUSE_POS):
+						enter = True
+
 
 		if estado == "FinalMinijuego":
 			tiempo_minijuego -= 1
