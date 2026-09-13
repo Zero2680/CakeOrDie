@@ -118,6 +118,7 @@ class Bola(Objeto):
     
 	def MovimientoLemon(self, plataforma):
 		if self.check_colisiones(plataforma) == True:
+			damage_sound.play()
 			plataforma.vidas -= 1
 			self.x = 1280
 			self.y = 210
@@ -134,12 +135,15 @@ class Bola(Objeto):
 		if self.x >= 1280 and self.direccionx == 1:
 			self.x = 0
 		if self.y <= 0:
+			lemon_sound.play()
 			self.direcciony = 1
 		if self.y >= 599:
+			lemon_sound.play()
 			self.direcciony = 0
     
 	def MovimientoGelatina(self, plataforma):
 		if self.check_colisiones(plataforma) == True:
+			damage_sound.play()
 			plataforma.vidas -= 1
 			self.x = 1280
 			self.y = 100
@@ -166,10 +170,12 @@ class Bola(Objeto):
 		if self.y <= 100:
 			self.direcciony = 1
 		if self.y >= 599:
+			gelatina_sound.play()
 			self.direcciony = 0
     
 	def MovimientoTortitas(self, plataforma):
 		if self.check_colisiones(plataforma) == True:
+			damage_sound.play()
 			plataforma.vidas -= 1
 			self.x = 1280
 		if self.direccionx == 0:
@@ -177,12 +183,15 @@ class Bola(Objeto):
 		if self.direccionx == 1:
 			self.x += 5
 		if self.x <= -1000 and self.direccionx == 0:
+			tortita_sound.play()
 			self.x = 1260
 		if self.x >= 2280 and self.direccionx == 1:
+			tortita_sound.play()
 			self.x = 0
     
 	def MovimientoDonut(self, plataforma):
 		if self.check_colisiones(plataforma):
+			damage_sound.play()
 			plataforma.vidas -= 1
 			self.y = -100
 		if self.y < 600:
@@ -190,13 +199,11 @@ class Bola(Objeto):
 				self.x = randrange(1, 13) * 100
 			self.y += 4
 		if self.y >= 600:
+			donut_sound.play()
 			self.y = -100
 
 	def MovimientoHuevo(self, plataforma):
 		global puntuacion_minijuegos
-		if self.check_colisiones(plataforma):
-			plataforma.vidas -= 1
-			self.y = -100
 		if self.direcciony == 1:
 			if self.y < 720:
 				if self.y == -100:
@@ -291,6 +298,24 @@ bb = transform.scale(image.load("cakeordie_images/BORRAR.png"), (32, 32))
 be = transform.scale(image.load("cakeordie_images/ENTER.png"), (32, 32))
 trozo = transform.scale(image.load("cakeordie_images/trozo.png"), (64, 64))
 trozo2 = transform.scale(image.load("cakeordie_images/trozo2.png"), (64, 64))
+donut_sound = mixer.Sound('cakeordie_sounds/Gota.ogg')
+donut_sound.set_volume(0.0625)
+lemon_sound = mixer.Sound('cakeordie_sounds/Tornado.ogg')
+lemon_sound.set_volume(0.0315)
+gelatina_sound = mixer.Sound('cakeordie_sounds/Gelatina.ogg')
+gelatina_sound.set_volume(0.125)
+tortita_sound = mixer.Sound('cakeordie_sounds/Tortita.ogg')
+tortita_sound.set_volume(0.25)
+damage_sound = mixer.Sound('cakeordie_sounds/Damage.ogg')
+damage_sound.set_volume(0.5)
+win_sound = mixer.Sound('cakeordie_sounds/Win.ogg')
+win_sound.set_volume(0.5)
+win2_sound = mixer.Sound('cakeordie_sounds/Win2.ogg')
+win2_sound.set_volume(0.5)
+lose_sound = mixer.Sound('cakeordie_sounds/Lose.ogg')
+lose_sound.set_volume(0.5)
+lose2_sound = mixer.Sound('cakeordie_sounds/Lose2.ogg')
+lose2_sound.set_volume(0.5)
 
 async def main():
 	global salto, angulo, x_jump, salto_doble, w, correr, suelo, x_sup, jump, quieto, puntuacion_minijuegos, pisos_tarta, posiciones
@@ -305,9 +330,9 @@ async def main():
 	jump = 0
 	quieto = True
 	puntuacion_minijuegos = 0
-	pisos_tarta = 4
+	pisos_tarta = 1
 	estado = "Menu"
-	plataforma = Bola(300,350,15,30, 1, 1, 0, (0,0,255), 3, 0)
+	plataforma = Bola(640,599,15,30, 1, 1, 0, (0,0,255), 3, 0)
 	enemigo = Bola(615,50,50,50, 1, 1, 0, (255,0,0), 100, 0)
 	suelo1 = Bola(0, 599, 1280, 300, 1, 1, 0, (0, 0, 0), 0, 0)
 	limon1 = Bola(0,0,15,15, 1, 1, 0, (0,255,0), 100, 0)
@@ -330,10 +355,12 @@ async def main():
 	donut4 = Bola(0,600,15,15, 1, 1, 0, (0,255,0), 100, 0)
 	animacion_run = 0
 	tiempo_minijuego = 1000 #Minijuego1 = 750
-	tiempo_juego = 12001
+	tiempo_juego = 0
+	final_sound = False
 	resultado_minijuego = False
 	while True:
 		if estado == "Menu":
+			mixer.music.stop()
 			screen.fill((0, 0, 0)) 
 
 			MENU_MOUSE_POS = mouse.get_pos()
@@ -360,6 +387,10 @@ async def main():
 					exit()
 				if evento.type == MOUSEBUTTONDOWN:
 					if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+						mixer.music.set_volume(0.25)
+						mixer.music.load('cakeordie_sounds/Musica.ogg')
+						mixer.music.set_volume(mixer.music.get_volume())
+						mixer.music.play(-1)
 						estado = "Play"
 					if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
 						estado = "Options"
@@ -377,6 +408,7 @@ async def main():
 			display.update()
 		
 		elif estado == "Options":
+			mixer.music.stop()
 			OPTIONS_MOUSE_POS = mouse.get_pos()
 
 			screen.fill((0, 0, 0)) 
@@ -620,7 +652,7 @@ async def main():
 				inicio_temporizador = time.get_ticks()
 				pulsado = False
 				estado = "Minijuego3"
-			if tiempo_juego >= 12000:
+			if tiempo_juego > 12000:
 				estado = "Final"
 
 			suelo1.DibujarObjeto()
@@ -1160,19 +1192,32 @@ async def main():
 						enter = True
 		
 		if estado == "Final":
+			mixer.music.stop()
 			if pisos_tarta == 1:
+				if final_sound == False:
+					lose_sound.play()
+					final_sound = True
 				PT1_TEXT = get_font(27).render("WELL... AT LEAST WE HAVE A CAKE", True, (0, 0, 0))
 				PT1_RECT = PT1_TEXT.get_rect(center=(640, 300))
 				screen.blit(PT1_TEXT, PT1_RECT)
 			if pisos_tarta == 2:
+				if final_sound == False:
+					win2_sound.play()
+					final_sound = True
 				PT1_TEXT = get_font(27).render("IT'S A SMALL CAKE, BUT IT'S FINE", True, (0, 0, 0))
 				PT1_RECT = PT1_TEXT.get_rect(center=(640, 300))
 				screen.blit(PT1_TEXT, PT1_RECT)
 			if pisos_tarta == 3:
+				if final_sound == False:
+					win2_sound.play()
+					final_sound = True
 				PT1_TEXT = get_font(27).render("THAT'S A PRETTY GOOD CAKE!", True, (0, 0, 0))
 				PT1_RECT = PT1_TEXT.get_rect(center=(640, 300))
 				screen.blit(PT1_TEXT, PT1_RECT)
 			if pisos_tarta == 4:
+				if final_sound == False:
+					win2_sound.play()
+					final_sound = True
 				PT1_TEXT = get_font(27).render("ALMOST THERE! ONE MORE FLOOR", True, (0, 0, 0))
 				PT1_RECT = PT1_TEXT.get_rect(center=(640, 300))
 				screen.blit(PT1_TEXT, PT1_RECT)
@@ -1180,6 +1225,9 @@ async def main():
 				PT1_RECT = PT1_TEXT.get_rect(center=(640, 350))
 				screen.blit(PT1_TEXT, PT1_RECT)
 			if pisos_tarta == 5:
+				if final_sound == False:
+					win_sound.play()
+					final_sound = True
 				PT5_TEXT = get_font(27).render("YOU DID IT! THE CAKE IS COMPLETED", True, (0, 0, 0))
 				PT5_RECT = PT5_TEXT.get_rect(center=(640, 300))
 				screen.blit(PT5_TEXT, PT5_RECT)
@@ -1206,6 +1254,7 @@ async def main():
 		if estado == "FinalMinijuego":
 			tiempo_minijuego -= 1
 			if resultado_minijuego == True:
+				if tiempo_minijuego == -1: win2_sound.play()
 				WIN_TEXT = get_font(37).render("GOOD JOB!", True, (237, 214, 120))
 				WIN_RECT = WIN_TEXT.get_rect(center=(640, 400))
 				screen.blit(WIN_TEXT, WIN_RECT)
@@ -1214,10 +1263,12 @@ async def main():
 					estado = "Play"
 			
 			elif resultado_minijuego == False:
+				if tiempo_minijuego == -1: lose2_sound.play()
 				LOSE_TEXT = get_font(37).render("NICE TRY!", True, (216, 44, 44))
 				LOSE_RECT = LOSE_TEXT.get_rect(center=(640, 400))
 				screen.blit(LOSE_TEXT, LOSE_RECT)
-				if tiempo_minijuego <= -200: estado = "Play"
+				if tiempo_minijuego <= -200: 
+					estado = "Play"
 			
 			display.update()
 			for evento in event.get():
