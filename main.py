@@ -4,7 +4,7 @@ from random import *
 from button import Button
 from math import *
 import asyncio
-screen = display.set_mode((1280, 720))
+screen = display.set_mode((1280, 720), FULLSCREEN)
 display.set_caption('Cake or Die')
 screen.fill((0, 0, 0)) 
 icono = image.load("cakeordie_images/icono_cakeordie.png")
