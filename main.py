@@ -176,9 +176,9 @@ class Bola(Objeto):
 			self.x -= 5
 		if self.direccionx == 1:
 			self.x += 5
-		if self.x <= 0 and self.direccionx == 0:
+		if self.x <= -1000 and self.direccionx == 0:
 			self.x = 1260
-		if self.x >= 1280 and self.direccionx == 1:
+		if self.x >= 2280 and self.direccionx == 1:
 			self.x = 0
     
 	def MovimientoDonut(self, plataforma):
@@ -289,6 +289,8 @@ b9 = transform.scale(image.load("cakeordie_images/9.png"), (32, 32))
 b0 = transform.scale(image.load("cakeordie_images/0.png"), (32, 32))
 bb = transform.scale(image.load("cakeordie_images/BORRAR.png"), (32, 32))
 be = transform.scale(image.load("cakeordie_images/ENTER.png"), (32, 32))
+trozo = transform.scale(image.load("cakeordie_images/trozo.png"), (64, 64))
+trozo2 = transform.scale(image.load("cakeordie_images/trozo2.png"), (64, 64))
 
 async def main():
 	global salto, angulo, x_jump, salto_doble, w, correr, suelo, x_sup, jump, quieto, puntuacion_minijuegos, pisos_tarta, posiciones
@@ -303,17 +305,32 @@ async def main():
 	jump = 0
 	quieto = True
 	puntuacion_minijuegos = 0
-	pisos_tarta = 1
+	pisos_tarta = 4
 	estado = "Menu"
-	plataforma = Bola(300,350,15,30, 1, 1, 0, (0,0,255), 100, 0)
+	plataforma = Bola(300,350,15,30, 1, 1, 0, (0,0,255), 3, 0)
 	enemigo = Bola(615,50,50,50, 1, 1, 0, (255,0,0), 100, 0)
 	suelo1 = Bola(0, 599, 1280, 300, 1, 1, 0, (0, 0, 0), 0, 0)
 	limon1 = Bola(0,0,15,15, 1, 1, 0, (0,255,0), 100, 0)
+	limon2 = Bola(1280,0,15,15, 0, 1, 0, (0,255,0), 100, 0)
+	limon3 = Bola(0,600,15,15, 1, 1, 0, (0,255,0), 100, 0)
+	limon4 = Bola(1280,600,15,15, 0, 1, 0, (0,255,0), 100, 0)
+	limon5 = Bola(0,0,15,15, 1, 1, 0, (0,255,0), 100, 0)
+	limon6 = Bola(1280,0,15,15, 0, 1, 0, (0,255,0), 100, 0)
+	limon7 = Bola(0,600,15,15, 1, 1, 0, (0,255,0), 100, 0)
+	limon8 = Bola(1280,600,15,15, 0, 1, 0, (0,255,0), 100, 0)
 	gelatina1 = Bola(0,100,15,15, 1, 1, 0, (0,255,0), 100, 0)
+	gelatina2 = Bola(0,100,15,15, 1, 1, 0, (0,255,0), 100, 0)
 	tortita1 = Bola(0,550,30,50, 1, 1, 0, (0,255,0), 100, 0)
-	donut1 = Bola(0,0,15,15, 1, 1, 0, (0,255,0), 100, 0)
+	tortita2 = Bola(0,550,30,50, 0, 1, 0, (0,255,0), 100, 0)
+	tortita3 = Bola(0,500,30,50, 1, 1, 0, (0,255,0), 100, 0)
+	tortita4 = Bola(0,500,30,50, 0, 1, 0, (0,255,0), 100, 0)
+	donut1 = Bola(0,600,15,15, 1, 1, 0, (0,255,0), 100, 0)
+	donut2 = Bola(0,600,15,15, 1, 1, 0, (0,255,0), 100, 0)
+	donut3 = Bola(0,600,15,15, 1, 1, 0, (0,255,0), 100, 0)
+	donut4 = Bola(0,600,15,15, 1, 1, 0, (0,255,0), 100, 0)
 	animacion_run = 0
 	tiempo_minijuego = 1000 #Minijuego1 = 750
+	tiempo_juego = 12001
 	resultado_minijuego = False
 	while True:
 		if estado == "Menu":
@@ -362,7 +379,6 @@ async def main():
 		elif estado == "Options":
 			OPTIONS_MOUSE_POS = mouse.get_pos()
 
-			#screen.blit(BG, (0, 0))
 			screen.fill((0, 0, 0)) 
 
 			OPTIONS_TEXT = get_font(45).render("OPTIONS", True, (244, 137, 246))
@@ -403,9 +419,25 @@ async def main():
 		elif estado == "Play":
 			screen.blit(fondo, (0, 0))
 			plataforma.Movimiento()
-			plataforma.DibujarObjeto()
 
-			enemigo.DibujarObjeto()
+			tiempo_juego += 1
+
+			if plataforma.vidas == 3:
+				screen.blit(trozo, (10, 10))
+				screen.blit(trozo, (70, 10))
+				screen.blit(trozo, (130, 10))
+			elif plataforma.vidas == 2:
+				screen.blit(trozo, (10, 10))
+				screen.blit(trozo, (60, 10))
+				screen.blit(trozo2, (110, 10))
+			elif plataforma.vidas == 1:
+				screen.blit(trozo, (10, 10))
+				screen.blit(trozo2, (60, 10))
+				screen.blit(trozo2, (110, 10))
+			elif plataforma.vidas <= 0:
+				if pisos_tarta > 1: pisos_tarta -= 1
+				plataforma.vidas = 3
+
 			if pisos_tarta == 1: screen.blit(cake1, (enemigo.x-75, enemigo.y))
 			elif pisos_tarta == 2: screen.blit(cake2, (enemigo.x-75, enemigo.y))
 			elif pisos_tarta == 3: screen.blit(cake3, (enemigo.x-75, enemigo.y))
@@ -414,27 +446,89 @@ async def main():
 			elif pisos_tarta == 6: screen.blit(cake, (enemigo.x-75, enemigo.y))
 
 			#ANIMACIÓN LEMON
-			#limon1.MovimientoLemon(plataforma)
-			#limon1.DibujarObjeto()
-			#if limon1.direccionx == 1:
-			#    screen.blit(lemon, (limon1.x-10, limon1.y-10))
-			#else:
-			#    screen.blit(lemon, (limon1.x-10, limon1.y-10))
+			limon1.MovimientoLemon(plataforma)
+			limon2.MovimientoLemon(plataforma)
+			if limon1.direccionx == 1:
+			    screen.blit(lemon1, (limon1.x-10, limon1.y-10))
+			else:
+			    screen.blit(lemon2, (limon1.x-10, limon1.y-10))
+			if limon2.direccionx == 1:
+			    screen.blit(lemon1, (limon2.x-10, limon2.y-10))
+			else:
+			    screen.blit(lemon2, (limon2.x-10, limon2.y-10))
+			
+			if tiempo_juego >= 3000:
+				limon3.MovimientoLemon(plataforma)
+				limon4.MovimientoLemon(plataforma)
+				if limon3.direccionx == 1:
+					screen.blit(lemon1, (limon3.x-10, limon3.y-10))
+				else:
+					screen.blit(lemon2, (limon3.x-10, limon3.y-10))
+				if limon4.direccionx == 1:
+					screen.blit(lemon1, (limon4.x-10, limon4.y-10))
+				else:
+					screen.blit(lemon2, (limon4.x-10, limon4.y-10))
+			
+			if tiempo_juego >= 6000:
+				limon5.MovimientoLemon(plataforma)
+				limon6.MovimientoLemon(plataforma)
+				if limon5.direccionx == 1:
+					screen.blit(lemon1, (limon5.x-10, limon5.y-10))
+				else:
+					screen.blit(lemon2, (limon5.x-10, limon5.y-10))
+				if limon6.direccionx == 1:
+					screen.blit(lemon1, (limon6.x-10, limon6.y-10))
+				else:
+					screen.blit(lemon2, (limon6.x-10, limon6.y-10))
 
+			if tiempo_juego >= 9000:
+				limon7.MovimientoLemon(plataforma)
+				limon8.MovimientoLemon(plataforma)
+				if limon7.direccionx == 1:
+					screen.blit(lemon1, (limon7.x-10, limon7.y-10))
+				else:
+					screen.blit(lemon2, (limon7.x-10, limon7.y-10))
+				if limon8.direccionx == 1:
+					screen.blit(lemon1, (limon8.x-10, limon8.y-10))
+				else:
+					screen.blit(lemon2, (limon8.x-10, limon8.y-10))
+			
 			#ANIMACIÓN GELATINA
-			#gelatina1.MovimientoGelatina(plataforma)
-			#gelatina1.DibujarObjeto()
-			#screen.blit(jelly, (gelatina1.x-10, gelatina1.y-10))
+			if tiempo_juego >= 750:
+				gelatina1.MovimientoGelatina(plataforma)
+				screen.blit(jelly, (gelatina1.x-10, gelatina1.y-10))
+
+			if tiempo_juego >= 6000:
+				gelatina2.MovimientoGelatina(plataforma)
+				screen.blit(jelly, (gelatina2.x-10, gelatina2.y-10))
 			
 			#ANIMACIÓN TORTITA
-			#tortita1.MovimientoTortitas(plataforma)
-			#tortita1.DibujarObjeto()
-			#screen.blit(pancake, (tortita1.x-20, tortita1.y-5))
+			if tiempo_juego >= 1500:
+				tortita1.MovimientoTortitas(plataforma)
+				screen.blit(pancake, (tortita1.x-20, tortita1.y-5))
+
+			if tiempo_juego >= 3000:
+				tortita2.MovimientoTortitas(plataforma)
+				screen.blit(pancake, (tortita2.x-20, tortita2.y-5))
+			
+			if tiempo_juego >= 9000:
+				tortita3.MovimientoTortitas(plataforma)
+				screen.blit(pancake, (tortita3.x-20, tortita3.y-5))
+				tortita4.MovimientoTortitas(plataforma)
+				screen.blit(pancake, (tortita4.x-20, tortita4.y-5))
 
 			#ANIMACIÓN DONUT
-			#donut1.MovimientoDonut(plataforma)
-			#donut1.DibujarObjeto()
-			#screen.blit(dona, (donut1.x-17.5, donut1.y-22.5))
+			if tiempo_juego >= 2250:
+				donut1.MovimientoDonut(plataforma)
+				donut2.MovimientoDonut(plataforma)
+				screen.blit(dona, (donut1.x-17.5, donut1.y-22.5))
+				screen.blit(dona, (donut2.x-17.5, donut2.y-22.5))
+
+			if tiempo_juego >= 6000:
+				donut3.MovimientoDonut(plataforma)
+				donut4.MovimientoDonut(plataforma)
+				screen.blit(dona, (donut3.x-17.5, donut3.y-22.5))
+				screen.blit(dona, (donut4.x-17.5, donut4.y-22.5))
 
 			#ANIMACIÓN PINKY
 			if suelo == False:
@@ -462,6 +556,73 @@ async def main():
 					else:
 						screen.blit(pinky2, (plataforma.x-14, plataforma.y-10))
 
+			#MINIJUEGOS
+			if tiempo_juego == 3000:
+				tiempo_minijuego = 750
+				puntuacion_minijuegos = 0
+				animacion_huevo = 0
+				huevo1 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
+				huevo2 = Bola(-100,0,40,40, 1, 0, 0, (0,255,0), 100, 0)
+				huevo3 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
+				huevo4 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
+				huevo5 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
+				huevo6 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
+				huevo7 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
+				huevo8 = Bola(0,-100,40,40, 0, 1, 0, (0,255,0), 100, 0)
+				huevo9 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
+				huevo10 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
+				inicio_temporizador = time.get_ticks()
+				tiempo_inicio = 0
+				estado = "Minijuego1"
+			if tiempo_juego == 6000:
+				tiempo_minijuego = 1000
+				puntuacion_minijuegos = 0
+				posiciones = []
+				barajar_cartas()
+				pareja11 = Bola(posiciones[0][0],posiciones[0][1],40,40, 0, 1, 0, (255,0,0), 100, 0)
+				pareja12 = Bola(posiciones[1][0],posiciones[1][1],40,40, 0, 1, 0, (255,0,0), 100, 0)
+				pareja21 = Bola(posiciones[2][0],posiciones[2][1],40,40, 0, 1, 0, (0,255,0), 100, 0)
+				pareja22 = Bola(posiciones[3][0],posiciones[3][1],40,40, 0, 1, 0, (0,255,0), 100, 0)
+				pareja31 = Bola(posiciones[4][0],posiciones[4][1],40,40, 0, 1, 0, (0,0,255), 100, 0)
+				pareja32 = Bola(posiciones[5][0],posiciones[5][1],40,40, 0, 1, 0, (0,0,255), 100, 0)
+				pareja41 = Bola(posiciones[6][0],posiciones[6][1],40,40, 0, 1, 0, (125,0,0), 100, 0)
+				pareja42 = Bola(posiciones[7][0],posiciones[7][1],40,40, 0, 1, 0, (125,0,0), 100, 0)
+				pareja51 = Bola(posiciones[8][0],posiciones[8][1],40,40, 0, 1, 0, (0,125,0), 100, 0)
+				pareja52 = Bola(posiciones[9][0],posiciones[9][1],40,40, 0, 1, 0, (0,125,0), 100, 0)
+				pareja61 = Bola(posiciones[10][0],posiciones[10][1],40,40, 0, 1, 0, (0,0,125), 100, 0)
+				pareja62 = Bola(posiciones[11][0],posiciones[11][1],40,40, 0, 1, 0, (0,0,125), 100, 0)
+				pareja = 0
+				pareja1= False
+				pareja2= False
+				pareja3= False
+				pareja4= False
+				pareja5= False
+				pareja6= False
+				inicio_temporizador = time.get_ticks()
+				tiempo_inicio = 0
+				estado = "Minijuego2"
+			if tiempo_juego == 9000:
+				tiempo_minijuego = 750
+				eggs_bill = choice([6, 12, 18]) #3, 6, 9
+				milk_bill = choice([1, 2, 3]) #2, 4, 6
+				chocolate_bill = choice([4, 5, 6]) #12, 15, 18
+				strawberry_bill = choice([10, 20, 30]) #2, 4, 6
+				cheese_bill = choice([1, 2, 3]) #5, 10, 15
+				cookie_bill = choice([7, 8, 9]) #7, 8, 9
+				precio_bill = 0
+				precio_final = int((eggs_bill * 0.5) + (milk_bill * 2) + (chocolate_bill * 3) + (strawberry_bill * 0.2) + (cheese_bill * 5) + (cookie_bill * 1))
+				enter = False
+				inicio_temporizador = time.get_ticks()
+				tiempo_inicio = 0
+				estado = "Minijuego4"
+			if tiempo_juego == 12000:
+				tiempo_minijuego = 0
+				inicio_temporizador = time.get_ticks()
+				pulsado = False
+				estado = "Minijuego3"
+			if tiempo_juego >= 12000:
+				estado = "Final"
+
 			suelo1.DibujarObjeto()
 			#COMPROBACION SUELO
 			if suelo1.check_suelo(plataforma):
@@ -482,83 +643,27 @@ async def main():
 					if evento.key == K_ESCAPE:
 						quit()
 						exit()
-					if evento.key == K_k:
-						tiempo_minijuego = 750
-						puntuacion_minijuegos = 0
-						animacion_huevo = 0
-						huevo1 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
-						huevo2 = Bola(-100,0,40,40, 1, 0, 0, (0,255,0), 100, 0)
-						huevo3 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
-						huevo4 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
-						huevo5 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
-						huevo6 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
-						huevo7 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
-						huevo8 = Bola(0,-100,40,40, 0, 1, 0, (0,255,0), 100, 0)
-						huevo9 = Bola(-100,0,40,40, 1, 0, 0, (255,0,0), 100, 0)
-						huevo10 = Bola(0,-100,40,40, 0, 1, 0, (255,0,0), 100, 0)
-						estado = "Minijuego1"
-					if evento.key == K_l:
-						tiempo_minijuego = 1000
-						puntuacion_minijuegos = 0
-						posiciones = []
-						barajar_cartas()
-						pareja11 = Bola(posiciones[0][0],posiciones[0][1],40,40, 0, 1, 0, (255,0,0), 100, 0)
-						pareja12 = Bola(posiciones[1][0],posiciones[1][1],40,40, 0, 1, 0, (255,0,0), 100, 0)
-						pareja21 = Bola(posiciones[2][0],posiciones[2][1],40,40, 0, 1, 0, (0,255,0), 100, 0)
-						pareja22 = Bola(posiciones[3][0],posiciones[3][1],40,40, 0, 1, 0, (0,255,0), 100, 0)
-						pareja31 = Bola(posiciones[4][0],posiciones[4][1],40,40, 0, 1, 0, (0,0,255), 100, 0)
-						pareja32 = Bola(posiciones[5][0],posiciones[5][1],40,40, 0, 1, 0, (0,0,255), 100, 0)
-						pareja41 = Bola(posiciones[6][0],posiciones[6][1],40,40, 0, 1, 0, (125,0,0), 100, 0)
-						pareja42 = Bola(posiciones[7][0],posiciones[7][1],40,40, 0, 1, 0, (125,0,0), 100, 0)
-						pareja51 = Bola(posiciones[8][0],posiciones[8][1],40,40, 0, 1, 0, (0,125,0), 100, 0)
-						pareja52 = Bola(posiciones[9][0],posiciones[9][1],40,40, 0, 1, 0, (0,125,0), 100, 0)
-						pareja61 = Bola(posiciones[10][0],posiciones[10][1],40,40, 0, 1, 0, (0,0,125), 100, 0)
-						pareja62 = Bola(posiciones[11][0],posiciones[11][1],40,40, 0, 1, 0, (0,0,125), 100, 0)
-						pareja = 0
-						pareja1= False
-						pareja2= False
-						pareja3= False
-						pareja4= False
-						pareja5= False
-						pareja6= False
-						estado = "Minijuego2"
-					if evento.key == K_o:
-						tiempo_minijuego = 0
-						inicio_temporizador = time.get_ticks()
-						pulsado = False
-						estado = "Minijuego3"
-					if evento.key == K_p:
-						tiempo_minijuego = 750
-						eggs_bill = choice([6, 12, 18]) #3, 6, 9
-						milk_bill = choice([1, 2, 3]) #2, 4, 6
-						chocolate_bill = choice([4, 5, 6]) #12, 15, 18
-						strawberry_bill = choice([10, 20, 30]) #2, 4, 6
-						cheese_bill = choice([1, 2, 3]) #5, 10, 15
-						cookie_bill = choice([7, 8, 9]) #7, 8, 9
-						precio_bill = 0
-						precio_final = int((eggs_bill * 0.5) + (milk_bill * 2) + (chocolate_bill * 3) + (strawberry_bill * 0.2) + (cheese_bill * 5) + (cookie_bill * 1))
-						enter = False
-						estado = "Minijuego4"
 
 		if estado == "Minijuego1":
 			if tiempo_minijuego >= 0 and puntuacion_minijuegos < 10:
 				screen.fill((0, 0, 0)) 
-				huevo1.MovimientoHuevo(plataforma)
-				huevo2.MovimientoHuevo(plataforma)
-				huevo3.MovimientoHuevo(plataforma)
-				huevo4.MovimientoHuevo(plataforma)
-				huevo5.MovimientoHuevo(plataforma)
-				huevo6.MovimientoHuevo(plataforma)
-				huevo7.MovimientoHuevo(plataforma)
-				huevo8.MovimientoHuevo(plataforma)
-				huevo9.MovimientoHuevo(plataforma)
-				huevo10.MovimientoHuevo(plataforma)
+
+				if tiempo_inicio > 1500:
+					huevo1.MovimientoHuevo(plataforma)
+					huevo2.MovimientoHuevo(plataforma)
+					huevo3.MovimientoHuevo(plataforma)
+					huevo4.MovimientoHuevo(plataforma)
+					huevo5.MovimientoHuevo(plataforma)
+					huevo6.MovimientoHuevo(plataforma)
+					huevo7.MovimientoHuevo(plataforma)
+					huevo8.MovimientoHuevo(plataforma)
+					huevo9.MovimientoHuevo(plataforma)
+					huevo10.MovimientoHuevo(plataforma)
+					tiempo_minijuego -= 1
+					animacion_huevo += 1
 
 				if tiempo_minijuego >= 150: barra_tiempo(screen, 340, 150, tiempo_minijuego/2.5, (255, 255, 255))
 				else: barra_tiempo(screen, 340, 150, tiempo_minijuego/2.5, (255, 0, 0))
-
-				tiempo_minijuego -= 1
-				animacion_huevo += 1
 
 				HUEVO_TEXT = get_font(37).render("PICK THE RAINBOW EGGS " + str(puntuacion_minijuegos) + "/10", True, (244, 137, 246))
 				HUEVO_RECT = HUEVO_TEXT.get_rect(center=(640, 100))
@@ -633,6 +738,24 @@ async def main():
 				if puntuacion_minijuegos == 10: resultado_minijuego = True
 				elif tiempo_minijuego <= 0: resultado_minijuego = False
 				estado = "FinalMinijuego"
+			
+			tiempo_inicio = time.get_ticks() - inicio_temporizador
+			if tiempo_inicio <= 500:
+				T3_TEXT = get_font(75).render("3", True, (255, 255, 255))
+				T3_RECT = T3_TEXT.get_rect(center=(640, 300))
+				screen.blit(T3_TEXT, T3_RECT)
+			elif tiempo_inicio <= 1000:
+				T2_TEXT = get_font(75).render("2", True, (255, 255, 255))
+				T2_RECT = T2_TEXT.get_rect(center=(640, 300))
+				screen.blit(T2_TEXT, T2_RECT)
+			elif tiempo_inicio <= 1500:
+				T1_TEXT = get_font(75).render("1", True, (255, 255, 255))
+				T1_RECT = T1_TEXT.get_rect(center=(640, 300))
+				screen.blit(T1_TEXT, T1_RECT)
+			elif tiempo_inicio <= 2000:
+				GO_TEXT = get_font(75).render("GO!", True, (255, 255, 255))
+				GO_RECT = GO_TEXT.get_rect(center=(640, 300))
+				screen.blit(GO_TEXT, GO_RECT)
 
 			display.update()
 			for evento in event.get():
@@ -647,7 +770,7 @@ async def main():
 					if evento.key == K_ESCAPE:
 						quit()
 						exit()
-				if evento.type == MOUSEBUTTONDOWN:
+				if evento.type == MOUSEBUTTONDOWN and tiempo_inicio > 1500:
 					if HUEVO1_BUTTON.checkForInput(HUEVO_MOUSE_POS):
 						huevo1.x = -100
 						tiempo_minijuego -= 50
@@ -688,50 +811,69 @@ async def main():
 
 			if tiempo_minijuego <= 750: barra_tiempo(screen, 340, 150, tiempo_minijuego/2.5, (255, 255, 255))
 
-			tiempo_minijuego -= 1
+			if tiempo_inicio > 1500:
+				tiempo_minijuego -= 1
 
-			if tiempo_minijuego > 750 or pareja1 == True:
-				screen.blit(pair1, (pareja11.x, pareja11.y))
-				screen.blit(pair1, (pareja12.x, pareja12.y))
-			else:
-				screen.blit(pair7, (pareja11.x, pareja11.y))
-				screen.blit(pair7, (pareja12.x, pareja12.y))
-			if tiempo_minijuego > 750 or pareja2 == True:
-				screen.blit(pair2, (pareja21.x, pareja21.y))
-				screen.blit(pair2, (pareja22.x, pareja22.y))
-			else:
-				screen.blit(pair7, (pareja21.x, pareja21.y))
-				screen.blit(pair7, (pareja22.x, pareja22.y))
-			if tiempo_minijuego > 750 or pareja3 == True:
-				screen.blit(pair3, (pareja31.x, pareja31.y))
-				screen.blit(pair3, (pareja32.x, pareja32.y))
-			else:
-				screen.blit(pair7, (pareja31.x, pareja31.y))
-				screen.blit(pair7, (pareja32.x, pareja32.y))
-			if tiempo_minijuego > 750 or pareja4 == True:
-				screen.blit(pair4, (pareja41.x, pareja41.y))
-				screen.blit(pair4, (pareja42.x, pareja42.y))
-			else:
-				screen.blit(pair7, (pareja41.x, pareja41.y))
-				screen.blit(pair7, (pareja42.x, pareja42.y))
-			if tiempo_minijuego > 750 or pareja5 == True:
-				screen.blit(pair5, (pareja51.x, pareja51.y))
-				screen.blit(pair5, (pareja52.x, pareja52.y))
-			else:
-				screen.blit(pair7, (pareja51.x, pareja51.y))
-				screen.blit(pair7, (pareja52.x, pareja52.y))
-			if tiempo_minijuego > 750 or pareja6 == True:
-				screen.blit(pair6, (pareja61.x, pareja61.y))
-				screen.blit(pair6, (pareja62.x, pareja62.y))
-			else:
-				screen.blit(pair7, (pareja61.x, pareja61.y))
-				screen.blit(pair7, (pareja62.x, pareja62.y))
+				if tiempo_minijuego > 750 or pareja1 == True:
+					screen.blit(pair1, (pareja11.x, pareja11.y))
+					screen.blit(pair1, (pareja12.x, pareja12.y))
+				else:
+					screen.blit(pair7, (pareja11.x, pareja11.y))
+					screen.blit(pair7, (pareja12.x, pareja12.y))
+				if tiempo_minijuego > 750 or pareja2 == True:
+					screen.blit(pair2, (pareja21.x, pareja21.y))
+					screen.blit(pair2, (pareja22.x, pareja22.y))
+				else:
+					screen.blit(pair7, (pareja21.x, pareja21.y))
+					screen.blit(pair7, (pareja22.x, pareja22.y))
+				if tiempo_minijuego > 750 or pareja3 == True:
+					screen.blit(pair3, (pareja31.x, pareja31.y))
+					screen.blit(pair3, (pareja32.x, pareja32.y))
+				else:
+					screen.blit(pair7, (pareja31.x, pareja31.y))
+					screen.blit(pair7, (pareja32.x, pareja32.y))
+				if tiempo_minijuego > 750 or pareja4 == True:
+					screen.blit(pair4, (pareja41.x, pareja41.y))
+					screen.blit(pair4, (pareja42.x, pareja42.y))
+				else:
+					screen.blit(pair7, (pareja41.x, pareja41.y))
+					screen.blit(pair7, (pareja42.x, pareja42.y))
+				if tiempo_minijuego > 750 or pareja5 == True:
+					screen.blit(pair5, (pareja51.x, pareja51.y))
+					screen.blit(pair5, (pareja52.x, pareja52.y))
+				else:
+					screen.blit(pair7, (pareja51.x, pareja51.y))
+					screen.blit(pair7, (pareja52.x, pareja52.y))
+				if tiempo_minijuego > 750 or pareja6 == True:
+					screen.blit(pair6, (pareja61.x, pareja61.y))
+					screen.blit(pair6, (pareja62.x, pareja62.y))
+				else:
+					screen.blit(pair7, (pareja61.x, pareja61.y))
+					screen.blit(pair7, (pareja62.x, pareja62.y))
 
 			if puntuacion_minijuegos == 6 or tiempo_minijuego <= 0: 
 				tiempo_minijuego = 0
 				if puntuacion_minijuegos == 6: resultado_minijuego = True
 				elif tiempo_minijuego <= 0: resultado_minijuego = False
 				estado = "FinalMinijuego"
+			
+			tiempo_inicio = time.get_ticks() - inicio_temporizador
+			if tiempo_inicio <= 500:
+				T3_TEXT = get_font(75).render("3", True, (255, 255, 255))
+				T3_RECT = T3_TEXT.get_rect(center=(640, 300))
+				screen.blit(T3_TEXT, T3_RECT)
+			elif tiempo_inicio <= 1000:
+				T2_TEXT = get_font(75).render("2", True, (255, 255, 255))
+				T2_RECT = T2_TEXT.get_rect(center=(640, 300))
+				screen.blit(T2_TEXT, T2_RECT)
+			elif tiempo_inicio <= 1500:
+				T1_TEXT = get_font(75).render("1", True, (255, 255, 255))
+				T1_RECT = T1_TEXT.get_rect(center=(640, 300))
+				screen.blit(T1_TEXT, T1_RECT)
+			elif tiempo_inicio <= 2000:
+				GO_TEXT = get_font(75).render("GO!", True, (255, 255, 255))
+				GO_RECT = GO_TEXT.get_rect(center=(640, 300))
+				screen.blit(GO_TEXT, GO_RECT)
 
 			PAREJAS_MOUSE_POS = mouse.get_pos()
 			PAREJA11_BUTTON = Button(image=None, pos=(pareja11.x+75, pareja11.y+100), text_input="P", font=get_font(150), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
@@ -760,7 +902,7 @@ async def main():
 					if evento.key == K_ESCAPE:
 						quit()
 						exit()
-				if evento.type == MOUSEBUTTONDOWN:
+				if evento.type == MOUSEBUTTONDOWN and tiempo_inicio > 1500:
 					if (PAREJA11_BUTTON.checkForInput(PAREJAS_MOUSE_POS) or PAREJA12_BUTTON.checkForInput(PAREJAS_MOUSE_POS)) and pareja1 == False and tiempo_minijuego <= 750:
 						if pareja == 0: pareja = 1
 						elif pareja == 1: 
@@ -875,8 +1017,6 @@ async def main():
 			if tiempo_minijuego >= 150: barra_tiempo(screen, 340, 150, tiempo_minijuego/2.5, (255, 255, 255))
 			else: barra_tiempo(screen, 340, 150, tiempo_minijuego/2.5, (255, 0, 0))
 
-			tiempo_minijuego -= 1
-
 			if tiempo_minijuego <= 0 or enter == True: 
 				tiempo_minijuego = 0
 				PF_TEXT2 = get_font(20).render(str(precio_final), True, (255, 255, 255))
@@ -885,50 +1025,70 @@ async def main():
 				if precio_bill == precio_final: resultado_minijuego = True
 				else: resultado_minijuego = False
 				estado = "FinalMinijuego"
+			
+			tiempo_inicio = time.get_ticks() - inicio_temporizador
+			if tiempo_inicio <= 500:
+				T3_TEXT = get_font(75).render("3", True, (255, 255, 255))
+				T3_RECT = T3_TEXT.get_rect(center=(640, 300))
+				screen.blit(T3_TEXT, T3_RECT)
+			elif tiempo_inicio <= 1000:
+				T2_TEXT = get_font(75).render("2", True, (255, 255, 255))
+				T2_RECT = T2_TEXT.get_rect(center=(640, 300))
+				screen.blit(T2_TEXT, T2_RECT)
+			elif tiempo_inicio <= 1500:
+				T1_TEXT = get_font(75).render("1", True, (255, 255, 255))
+				T1_RECT = T1_TEXT.get_rect(center=(640, 300))
+				screen.blit(T1_TEXT, T1_RECT)
+			elif tiempo_inicio <= 2000:
+				GO_TEXT = get_font(75).render("GO!", True, (255, 255, 255))
+				GO_RECT = GO_TEXT.get_rect(center=(640, 300))
+				screen.blit(GO_TEXT, GO_RECT)
 
-			PRICE_TEXT = get_font(20).render("PRICES", True, (255, 255, 255))
-			PRICE_RECT = PRICE_TEXT.get_rect(center=(320, 200))
-			screen.blit(PRICE_TEXT, PRICE_RECT)
-			EGG_TEXT = get_font(20).render("EGGS............0,5€/unit", True, (255, 255, 255))
-			EGG_RECT = EGG_TEXT.get_rect(center=(320, 250))
-			screen.blit(EGG_TEXT, EGG_RECT)
-			MILK_TEXT = get_font(20).render("MILK..............2€/unit", True, (255, 255, 255))
-			MILK_RECT = MILK_TEXT.get_rect(center=(320, 300))
-			screen.blit(MILK_TEXT, MILK_RECT)
-			CHOCOLATE_TEXT = get_font(20).render("CHOCOLATE.........3€/unit", True, (255, 255, 255))
-			CHOCOLATE_RECT = CHOCOLATE_TEXT.get_rect(center=(320, 350))
-			screen.blit(CHOCOLATE_TEXT, CHOCOLATE_RECT)
-			STRAWBERRY_TEXT = get_font(20).render("STRAWBERRIES....0,2€/unit", True, (255, 255, 255))
-			STRAWBERRY_RECT = STRAWBERRY_TEXT.get_rect(center=(320, 400))
-			screen.blit(STRAWBERRY_TEXT, STRAWBERRY_RECT)
-			CHEESE_TEXT = get_font(20).render("CHEESE............5€/unit", True, (255, 255, 255))
-			CHEESE_RECT = CHEESE_TEXT.get_rect(center=(320, 450))
-			screen.blit(CHEESE_TEXT, CHEESE_RECT)
-			COOKIE_TEXT = get_font(20).render("COOKIES...........1€/unit", True, (255, 255, 255))
-			COOKIE_RECT = COOKIE_TEXT.get_rect(center=(320, 500))
-			screen.blit(COOKIE_TEXT, COOKIE_RECT)
+			if tiempo_inicio > 1500:
+				tiempo_minijuego -= 1
+				PRICE_TEXT = get_font(20).render("PRICES", True, (255, 255, 255))
+				PRICE_RECT = PRICE_TEXT.get_rect(center=(320, 200))
+				screen.blit(PRICE_TEXT, PRICE_RECT)
+				EGG_TEXT = get_font(20).render("EGGS............0,5€/unit", True, (255, 255, 255))
+				EGG_RECT = EGG_TEXT.get_rect(center=(320, 250))
+				screen.blit(EGG_TEXT, EGG_RECT)
+				MILK_TEXT = get_font(20).render("MILK..............2€/unit", True, (255, 255, 255))
+				MILK_RECT = MILK_TEXT.get_rect(center=(320, 300))
+				screen.blit(MILK_TEXT, MILK_RECT)
+				CHOCOLATE_TEXT = get_font(20).render("CHOCOLATE.........3€/unit", True, (255, 255, 255))
+				CHOCOLATE_RECT = CHOCOLATE_TEXT.get_rect(center=(320, 350))
+				screen.blit(CHOCOLATE_TEXT, CHOCOLATE_RECT)
+				STRAWBERRY_TEXT = get_font(20).render("STRAWBERRIES....0,2€/unit", True, (255, 255, 255))
+				STRAWBERRY_RECT = STRAWBERRY_TEXT.get_rect(center=(320, 400))
+				screen.blit(STRAWBERRY_TEXT, STRAWBERRY_RECT)
+				CHEESE_TEXT = get_font(20).render("CHEESE............5€/unit", True, (255, 255, 255))
+				CHEESE_RECT = CHEESE_TEXT.get_rect(center=(320, 450))
+				screen.blit(CHEESE_TEXT, CHEESE_RECT)
+				COOKIE_TEXT = get_font(20).render("COOKIES...........1€/unit", True, (255, 255, 255))
+				COOKIE_RECT = COOKIE_TEXT.get_rect(center=(320, 500))
+				screen.blit(COOKIE_TEXT, COOKIE_RECT)
 
-			BILL_TEXT2 = get_font(20).render("BILL", True, (255, 255, 255))
-			BILL_RECT2 = BILL_TEXT2.get_rect(center=(960, 200))
-			screen.blit(BILL_TEXT2, BILL_RECT2)
-			EGG_TEXT2 = get_font(20).render("EGGS............" + str(eggs_bill) + " units", True, (255, 255, 255))
-			EGG_RECT2 = EGG_TEXT2.get_rect(center=(960, 250))
-			screen.blit(EGG_TEXT2, EGG_RECT2)
-			MILK_TEXT2 = get_font(20).render("MILK............." + str(milk_bill) + " units", True, (255, 255, 255))
-			MILK_RECT2 = MILK_TEXT2.get_rect(center=(960, 300))
-			screen.blit(MILK_TEXT2, MILK_RECT2)
-			CHOCOLATE_TEXT2 = get_font(20).render("CHOCOLATE........" + str(chocolate_bill) + " units", True, (255, 255, 255))
-			CHOCOLATE_RECT2 = CHOCOLATE_TEXT2.get_rect(center=(960, 350))
-			screen.blit(CHOCOLATE_TEXT2, CHOCOLATE_RECT2)
-			STRAWBERRY_TEXT2 = get_font(20).render("STRAWBERRIES...." + str(strawberry_bill) + " units", True, (255, 255, 255))
-			STRAWBERRY_RECT2 = STRAWBERRY_TEXT2.get_rect(center=(960, 400))
-			screen.blit(STRAWBERRY_TEXT2, STRAWBERRY_RECT2)
-			CHEESE_TEXT2 = get_font(20).render("CHEESE..........." + str(cheese_bill) + " units", True, (255, 255, 255))
-			CHEESE_RECT2 = CHEESE_TEXT2.get_rect(center=(960, 450))
-			screen.blit(CHEESE_TEXT2, CHEESE_RECT2)
-			COOKIE_TEXT2 = get_font(20).render("COOKIES.........." + str(cookie_bill) + " units", True, (255, 255, 255))
-			COOKIE_RECT2 = COOKIE_TEXT2.get_rect(center=(960, 500))
-			screen.blit(COOKIE_TEXT2, COOKIE_RECT2)
+				BILL_TEXT2 = get_font(20).render("BILL", True, (255, 255, 255))
+				BILL_RECT2 = BILL_TEXT2.get_rect(center=(960, 200))
+				screen.blit(BILL_TEXT2, BILL_RECT2)
+				EGG_TEXT2 = get_font(20).render("EGGS............" + str(eggs_bill) + " units", True, (255, 255, 255))
+				EGG_RECT2 = EGG_TEXT2.get_rect(center=(960, 250))
+				screen.blit(EGG_TEXT2, EGG_RECT2)
+				MILK_TEXT2 = get_font(20).render("MILK............." + str(milk_bill) + " units", True, (255, 255, 255))
+				MILK_RECT2 = MILK_TEXT2.get_rect(center=(960, 300))
+				screen.blit(MILK_TEXT2, MILK_RECT2)
+				CHOCOLATE_TEXT2 = get_font(20).render("CHOCOLATE........" + str(chocolate_bill) + " units", True, (255, 255, 255))
+				CHOCOLATE_RECT2 = CHOCOLATE_TEXT2.get_rect(center=(960, 350))
+				screen.blit(CHOCOLATE_TEXT2, CHOCOLATE_RECT2)
+				STRAWBERRY_TEXT2 = get_font(20).render("STRAWBERRIES...." + str(strawberry_bill) + " units", True, (255, 255, 255))
+				STRAWBERRY_RECT2 = STRAWBERRY_TEXT2.get_rect(center=(960, 400))
+				screen.blit(STRAWBERRY_TEXT2, STRAWBERRY_RECT2)
+				CHEESE_TEXT2 = get_font(20).render("CHEESE..........." + str(cheese_bill) + " units", True, (255, 255, 255))
+				CHEESE_RECT2 = CHEESE_TEXT2.get_rect(center=(960, 450))
+				screen.blit(CHEESE_TEXT2, CHEESE_RECT2)
+				COOKIE_TEXT2 = get_font(20).render("COOKIES.........." + str(cookie_bill) + " units", True, (255, 255, 255))
+				COOKIE_RECT2 = COOKIE_TEXT2.get_rect(center=(960, 500))
+				screen.blit(COOKIE_TEXT2, COOKIE_RECT2)
 
 			B_MOUSE_POS = mouse.get_pos()
 			B1_BUTTON = Button(image=None, pos=(580, 560), text_input="1", font=get_font(30), base_color=(215, 252, 212), hovering_color=(255, 255, 255))
@@ -973,7 +1133,7 @@ async def main():
 					if evento.key == K_ESCAPE:
 						quit()
 						exit()
-				if evento.type == MOUSEBUTTONDOWN:
+				if evento.type == MOUSEBUTTONDOWN and tiempo_inicio > 1500:
 					if B1_BUTTON.checkForInput(B_MOUSE_POS):
 						precio_bill = (precio_bill * 10) + 1
 					if B2_BUTTON.checkForInput(B_MOUSE_POS):
@@ -998,7 +1158,50 @@ async def main():
 						precio_bill = precio_bill // 10
 					if BENTER_BUTTON.checkForInput(B_MOUSE_POS):
 						enter = True
-
+		
+		if estado == "Final":
+			if pisos_tarta == 1:
+				PT1_TEXT = get_font(27).render("WELL... AT LEAST WE HAVE A CAKE", True, (0, 0, 0))
+				PT1_RECT = PT1_TEXT.get_rect(center=(640, 300))
+				screen.blit(PT1_TEXT, PT1_RECT)
+			if pisos_tarta == 2:
+				PT1_TEXT = get_font(27).render("IT'S A SMALL CAKE, BUT IT'S FINE", True, (0, 0, 0))
+				PT1_RECT = PT1_TEXT.get_rect(center=(640, 300))
+				screen.blit(PT1_TEXT, PT1_RECT)
+			if pisos_tarta == 3:
+				PT1_TEXT = get_font(27).render("THAT'S A PRETTY GOOD CAKE!", True, (0, 0, 0))
+				PT1_RECT = PT1_TEXT.get_rect(center=(640, 300))
+				screen.blit(PT1_TEXT, PT1_RECT)
+			if pisos_tarta == 4:
+				PT1_TEXT = get_font(27).render("ALMOST THERE! ONE MORE FLOOR", True, (0, 0, 0))
+				PT1_RECT = PT1_TEXT.get_rect(center=(640, 300))
+				screen.blit(PT1_TEXT, PT1_RECT)
+				PT1_TEXT = get_font(27).render("AND IT WILL BE COMPLETED", True, (0, 0, 0))
+				PT1_RECT = PT1_TEXT.get_rect(center=(640, 350))
+				screen.blit(PT1_TEXT, PT1_RECT)
+			if pisos_tarta == 5:
+				PT5_TEXT = get_font(27).render("YOU DID IT! THE CAKE IS COMPLETED", True, (0, 0, 0))
+				PT5_RECT = PT5_TEXT.get_rect(center=(640, 300))
+				screen.blit(PT5_TEXT, PT5_RECT)
+				PT5_TEXT = get_font(27).render("THERE'S ENOUGH CAKE FOR EVERYONE", True, (0, 0, 0))
+				PT5_RECT = PT5_TEXT.get_rect(center=(640, 350))
+				screen.blit(PT5_TEXT, PT5_RECT)
+				PT5_TEXT = get_font(27).render("HAPPY 10TH ANNIVERSARY CRAFTPIX!", True, (0, 0, 0))
+				PT5_RECT = PT5_TEXT.get_rect(center=(640, 400))
+				screen.blit(PT5_TEXT, PT5_RECT)
+			display.update()
+			for evento in event.get():
+				if evento.type == QUIT:
+					quit()
+					exit()
+				if evento.type==KEYDOWN:
+					if evento.key == K_1 and mixer.music.get_volume() > 0.0:
+						mixer.music.set_volume(mixer.music.get_volume() - 0.1)
+					if evento.key == K_2 and mixer.music.get_volume() > 0.0:
+						mixer.music.set_volume(mixer.music.get_volume() + 0.1)
+					if evento.key == K_ESCAPE:
+						quit()
+						exit()
 
 		if estado == "FinalMinijuego":
 			tiempo_minijuego -= 1
